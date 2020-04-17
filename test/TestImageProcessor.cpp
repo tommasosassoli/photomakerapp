@@ -4,13 +4,13 @@
 
 #include <fstream>
 #include "gtest/gtest.h"
-#include "../ImageProcessor.h"
+#include "../src/core/ImageProcessor.h"
 
 class TestImageProcessor : public ::testing::Test {
 protected:
-    Pixel kernelArray[9] = {Pixel(0,0,0), Pixel(-1,-1,-1),Pixel(0,0,0),
-                            Pixel(-1,-1,-1),Pixel(5,5,5),Pixel(-1,-1,-1),
-                            Pixel(0,0,0),Pixel(-1,-1,-1),Pixel(0,0,0) };
+    Pixel kernelArray[9] = { 0, -1,  0,
+                            -1,  5, -1,
+                             0, -1,  0 };
     ImageProcessor *imgProc;
 
     virtual void SetUp() {

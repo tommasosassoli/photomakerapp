@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "../Image.h"
+#include "../src/core/Image.h"
 
 /// Test for the class Image.
 /// @test for submatrix: TopLeft, CenterRight, Center, BottomLeft.

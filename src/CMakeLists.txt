@@ -4,3 +4,8 @@ add_subdirectory(core)
 
 add_executable(photomakerapp main.cpp )
 target_link_libraries(photomakerapp photomakerapp_core_lib)
+
+set_target_properties(photomakerapp photomakerapp_core_lib
+        PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/photomakerapp/lib"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/photomakerapp")

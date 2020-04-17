@@ -3,8 +3,8 @@
 //
 
 #include "gtest/gtest.h"
-#include "../Pixel.h"
-#include "../PixelMatrix.h"
+#include "../src/core/Pixel.h"
+#include "../src/core/PixelMatrix.h"
 
 TEST(TestPixelMatrix, constructorWithArray) {
     Pixel pArr[9] = {Pixel(0,0,0), Pixel(1,1,1),Pixel(1,1,1),
