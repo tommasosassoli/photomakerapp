@@ -33,3 +33,4 @@
 
 # Project exclude paths
 /src/cmake-build-debug/
+/cmake-build-debug/
