@@ -6,6 +6,7 @@ set(SOURCE_FILES
         ImageException.h
         PixelMatrix.cpp PixelMatrix.h
         ImageProcessor.cpp ImageProcessor.h
-        KernelTemplate.cpp KernelTemplate.h)
+        KernelTemplate.cpp KernelTemplate.h
+        HSVPixel.cpp HSVPixel.h)
 
 add_library(photomakerapp_core_lib ${SOURCE_FILES})

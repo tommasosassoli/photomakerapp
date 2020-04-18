@@ -34,6 +34,10 @@ void Pixel::setB(int b) {
     B = b;
 }
 
+HSVPixel Pixel::toHSV() {
+    return HSVPixel(this);
+}
+
 std::string Pixel::toString() {
     return "  " + std::to_string(this->R) + " " + std::to_string(this->G) + " " + std::to_string(this->B);
 }
@@ -61,3 +65,4 @@ Pixel operator+(const Pixel &p1, const Pixel& p2) {
 bool operator==(const Pixel &p1, const Pixel &p2) {
     return (p1.R == p2.R) && (p1.G == p2.G) && (p1.B == p2.B);
 }
+

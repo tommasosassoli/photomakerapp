@@ -6,6 +6,9 @@
 #define IMAGEPARSER_PIXEL_H
 
 #include <istream>
+#include "HSVPixel.h"
+
+class HSVPixel;
 
 /**
  * Class that represent 3-channel pixel.
@@ -41,6 +44,8 @@ public:
     int getB() const;
 
     void setB(int b);
+
+    HSVPixel toHSV();
 
     std::string toString();
 
