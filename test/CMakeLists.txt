@@ -15,5 +15,4 @@ set(SOURCE_FILES
 add_executable(runTestPhotoMakerApp ${SOURCE_FILES})
 target_link_libraries(runTestPhotoMakerApp
         gtest gtest_main
-        photomakerapp_core_lib
-        photomakerapp_utils_lib)
+        photomakerapp_core_lib)
