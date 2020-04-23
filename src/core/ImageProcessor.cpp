@@ -4,25 +4,18 @@
 
 #include "ImageProcessor.h"
 
-ImageProcessor::ImageProcessor(Pixel *arr, const int length) {
-    kernel = new PixelMatrix(arr, length);
-}
-
-ImageProcessor::~ImageProcessor() {
-    delete kernel;
-}
-
-Image ImageProcessor::applyConvolution(const Image &img) {
+/*Image computeConvolution(const Image &img, KernelMatrix &kernel) {
     Image newimg = img;     //deep copy
 
-    PixelMatrix submatrix;
-    Pixel **newbuffer = newimg.getBuffer();
+    int dim = kernel->getDimension();
+    //PixelMatrix submatrix;
+    RGBPixel **newbuffer = newimg.getBuffer();
 
     for(int i = 0; i < newimg.getHeight(); i++)
         for(int j = 0; j < newimg.getWidth(); j++){
-            submatrix = img.getSubMatrix(i, j);
-            newbuffer[i][j] = submatrix * (*kernel);     //convolution
+            PixelMatrix submatrix = img.getSubMatrix(i, j, dim);
+            newbuffer[i][j] = kernel->computeConvolution(submatrix);     //convolution
             newimg.validatePixel(newbuffer[i][j]);
         }
     return newimg;
-}
+}*/

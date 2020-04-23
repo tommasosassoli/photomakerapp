@@ -3,59 +3,58 @@
 //
 
 #include "gtest/gtest.h"
-#include "../src/core/Pixel.h"
-#include "../src/core/HSVPixel.h"
+#include "../src/core/pixels/RGBPixel.h"
 
 class TestPixelConversion : public ::testing::Test {
 protected:
-    void testHSVPixel(int r, int g, int b, int h, int s, int v);
+    void testHSVPixel(int r, int g, int b, int h, double s, double v);
 };
 
 TEST_F(TestPixelConversion, RGBtoHSV) {
-    testHSVPixel(0, 0, 0, 0, 0, 0);              //black
-    testHSVPixel(255, 255, 255, 0, 0, 100);      //white
-    testHSVPixel(255, 0, 0, 0, 100, 100);        //red
-    testHSVPixel(0, 255, 0, 120, 100, 100);      //lime
-    testHSVPixel(0, 0, 255, 240, 100, 100);      //blue
-    testHSVPixel(255, 255, 0, 60, 100, 100);     //yellow
-    testHSVPixel(0, 255, 255, 180, 100, 100);    //cyan
-    testHSVPixel(255, 0, 255, 300, 100, 100);    //magenta
-    testHSVPixel(191, 191, 191, 0, 0, 75);       //silver
-    testHSVPixel(128, 128, 128, 0, 0, 50);       //gray
-    testHSVPixel(128, 0, 0, 0, 100, 50);         //maroon
-    testHSVPixel(128, 128, 0, 60, 100, 50);      //olive
-    testHSVPixel(0, 128, 0, 120, 100, 50);       //green
-    testHSVPixel(128, 0, 128, 300, 100, 50);     //purple
-    testHSVPixel(0, 128, 128, 180, 100, 50);     //teal
-    testHSVPixel(0, 0, 128, 240, 100, 50);       //navy
+    testHSVPixel(0, 0, 0,       0, 0, 0);       //black
+    testHSVPixel(255, 255, 255, 0, 0, 1);       //white
+    testHSVPixel(255, 0, 0,     0, 1, 1);       //red
+    testHSVPixel(0, 255, 0,     120, 1, 1);     //lime
+    testHSVPixel(0, 0, 255,     240, 1, 1);     //blue
+    testHSVPixel(255, 255, 0,   60, 1, 1);      //yellow
+    testHSVPixel(0, 255, 255,   180, 1, 1);     //cyan
+    testHSVPixel(255, 0, 255,   300, 1, 1);     //magenta
+    testHSVPixel(191, 191, 191, 0, 0, 0.75);    //silver
+    testHSVPixel(128, 128, 128, 0, 0, 0.50);    //gray
+    testHSVPixel(128, 0, 0,     0, 1, 0.50);    //maroon
+    testHSVPixel(128, 128, 0,   60, 1, 0.50);   //olive
+    testHSVPixel(0, 128, 0,     120, 1, 0.50);  //green
+    testHSVPixel(128, 0, 128,   300, 1, 0.50);  //purple
+    testHSVPixel(0, 128, 128,   180, 1, 0.50);  //teal
+    testHSVPixel(0, 0, 128,     240, 1, 0.50);  //navy
 }
 
 TEST_F(TestPixelConversion, PixelTransformation){
-    Pixel p(0, 255, 255);               //cyan
-    HSVPixel hsvGenerated = p.toHSV();          //180, 1, 1
+    RGBPixel rgbP(0, 255, 255);               //cyan
+    HSVPixel hsvGenerated = rgbP.toHSV();          //180, 1, 1
 
     //reducing saturation
-    hsvGenerated.setSaturation(20);    //180, 0.2, 1
-    ASSERT_EQ(Pixel(204,255,255), p);
+    hsvGenerated.setSaturation(0.2);    //180, 0.2, 1
+    ASSERT_EQ(RGBPixel(204,255,255), hsvGenerated.toRGB());
 
     //reducing value
-    hsvGenerated.setValue(60);            //180, 0.2, 0.6
-    ASSERT_EQ(Pixel(122,153,153), p);
+    hsvGenerated.setValue(0.6);            //180, 0.2, 0.6
+    ASSERT_EQ(RGBPixel(122,153,153), hsvGenerated.toRGB());
 
     //changing hue
     hsvGenerated.setHue(240);               //240, 0.2, 0.6
-    ASSERT_EQ(Pixel(122,122,153), p);
+    ASSERT_EQ(RGBPixel(122,122,153), hsvGenerated.toRGB());
 }
 
-void TestPixelConversion::testHSVPixel(int r, int g, int b, int h, int s, int v){
-    Pixel p(r,g,b);
+void TestPixelConversion::testHSVPixel(int r, int g, int b, int h, double s, double v){
+    RGBPixel rgbP(r,g,b);
     HSVPixel hsvP(h,s,v);
 
     //transform RGB -> HSV
-    HSVPixel hsvGenerated = p.toHSV();
+    HSVPixel hsvGenerated = rgbP.toHSV();
     ASSERT_EQ(hsvP, hsvGenerated);
 
     //transform HSV -> RGB (comeback)
-    hsvGenerated.updateRGBPixel();
-    ASSERT_EQ(Pixel(r,g,b), p);
+    RGBPixel rgbGenerated = hsvP.toRGB();
+    ASSERT_EQ(rgbP, rgbGenerated);
 }

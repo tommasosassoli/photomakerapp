@@ -5,16 +5,16 @@
 #ifndef KERNELIMAGE_KERNELTEMPLATE_H
 #define KERNELIMAGE_KERNELTEMPLATE_H
 
-#include "Pixel.h"
+#include "pixels/RGBPixel.h"
 
 class KernelTemplate {
 public:
-    static Pixel identity[9];
-    static Pixel laplatian4[9];
-    static Pixel laplatian8[9];
-    static Pixel sharpen[9];
-    //static Pixel boxBlur[9];
-    //static const Pixel gaussianBlur5x5[9];
+    static RGBPixel identity[9];
+    static RGBPixel laplatian4[9];
+    static RGBPixel laplatian8[9];
+    static RGBPixel sharpen[9];
+    //static RGBPixel boxBlur[9];
+    //static const RGBPixel gaussianBlur5x5[9];
 
 public:
     KernelTemplate() = delete;

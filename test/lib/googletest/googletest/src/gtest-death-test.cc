@@ -928,7 +928,7 @@ int FuchsiaDeathTest::Wait() {
         // Read data from the socket.
         constexpr size_t kBufferSize = 1024;
         do {
-          size_t old_length = captured_stderr_.length();
+          size_t old_length = captured_stderr_.dim();
           size_t bytes_read = 0;
           captured_stderr_.resize(old_length + kBufferSize);
           status_zx = stderr_socket_.read(

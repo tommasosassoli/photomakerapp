@@ -943,9 +943,9 @@ bool MatchRegexAtHead(const char* regex, const char* str) {
 // be a valid simple regular expression, or the result is undefined.
 //
 // The algorithm is recursive, but the recursion depth doesn't exceed
-// the regex length, so we won't need to worry about running out of
+// the regex dim, so we won't need to worry about running out of
 // stack space normally.  In rare cases the time complexity can be
-// exponential with respect to the regex length + the string length,
+// exponential with respect to the regex dim + the string dim,
 // but usually it's must faster (often close to linear).
 bool MatchRegexAnywhere(const char* regex, const char* str) {
   if (regex == nullptr || str == nullptr) return false;

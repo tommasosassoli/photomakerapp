@@ -11,8 +11,7 @@
 class DISABLED_TestExecutionTime : public ::testing::Test {
 protected:
     std::ifstream bigImgFile;       //ferrari.ppm (2005 x 1254)
-    Image img;
-    ImageProcessor *proc;
+    Image<> img;
 
     virtual void SetUp() {
         try {
@@ -20,7 +19,7 @@ protected:
             if (bigImgFile.is_open())
                 bigImgFile >> img;
 
-            proc = new ImageProcessor(KernelTemplate::laplatian8, 9);
+            //proc = new ImageProcessor(KernelTemplate::laplatian8, 9);
         }catch (ImageException &e){
             GTEST_FATAL_FAILURE_(e.what());
         }
@@ -29,12 +28,10 @@ protected:
     virtual void TearDown() {
         if(bigImgFile.is_open())
             bigImgFile.close();
-
-        delete proc;
     }
 };
 
 
 TEST_F(DISABLED_TestExecutionTime, executionTime) {
-    proc->applyConvolution(img);
+    //proc->applyConvolution(img);
 }

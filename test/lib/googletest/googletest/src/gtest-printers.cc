@@ -253,7 +253,7 @@ void PrintTo(wchar_t wc, ostream* os) {
 
 // Prints the given array of characters to the ostream.  CharType must be either
 // char or wchar_t.
-// The array starts at begin, the length is len, it may include '\0' characters
+// The array starts at begin, the dim is len, it may include '\0' characters
 // and may not be NUL-terminated.
 template <typename CharType>
 GTEST_ATTRIBUTE_NO_SANITIZE_MEMORY_

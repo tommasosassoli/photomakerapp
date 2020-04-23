@@ -6,9 +6,6 @@ include_directories(${GTEST_SOURCE_DIR}/include ${GTEST_SOURCE_DIR})
 
 set(SOURCE_FILES
         mainTestPhotoMakerApp.cpp
-        TestSquareImage.cpp
-        TestRectangleImage.cpp
-        TestPixelMatrix.cpp
         TestImageProcessor.cpp
         TestExecutionTime.cpp TestPixelConversion.cpp)
 

@@ -1036,11 +1036,11 @@ TimeInMillis GetTimeInMillis() {
 // input is NULL.
 LPCWSTR String::AnsiToUtf16(const char* ansi) {
   if (!ansi) return nullptr;
-  const int length = strlen(ansi);
+  const int dim = strlen(ansi);
   const int unicode_length =
-      MultiByteToWideChar(CP_ACP, 0, ansi, length, nullptr, 0);
+      MultiByteToWideChar(CP_ACP, 0, ansi, dim, nullptr, 0);
   WCHAR* unicode = new WCHAR[unicode_length + 1];
-  MultiByteToWideChar(CP_ACP, 0, ansi, length,
+  MultiByteToWideChar(CP_ACP, 0, ansi, dim,
                       unicode, unicode_length);
   unicode[unicode_length] = 0;
   return unicode;
@@ -1888,7 +1888,7 @@ AssertionResult IsHRESULTFailure(const char* expr, long hr) {  // NOLINT
 // A Unicode code-point can have up to 21 bits, and is encoded in UTF-8
 // like this:
 //
-// Code-point length   Encoding
+// Code-point dim   Encoding
 //   0 -  7 bits       0xxxxxxx
 //   8 - 11 bits       110xxxxx 10xxxxxx
 //  12 - 16 bits       1110xxxx 10xxxxxx 10xxxxxx
