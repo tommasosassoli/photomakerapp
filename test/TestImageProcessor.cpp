@@ -20,14 +20,20 @@ protected:
                                0, -1,  0 };
     KernelMatrix *kernelMatrix;
 
-    void testImage(std::string orig, std::string deriv);
+    void testRGBImage(std::string orig, std::string deriv);
+
+    void testHSVImage(std::string orig, std::string deriv);
 };
 
-TEST_F(TestImageProcessor, testConvolution) {
-    TestImageProcessor::testImage("Vd-Orig", "Vd-Sharp");
+TEST_F(TestImageProcessor, testRGBConvolution) {
+    TestImageProcessor::testRGBImage("Vd-Orig", "Vd-Sharp");
 }
 
-void TestImageProcessor::testImage(std::string orig, std::string deriv){
+TEST_F(TestImageProcessor, testHSVConvolution) {
+    TestImageProcessor::testHSVImage("Vd-Orig", "Vd-Sharp");
+}
+
+void TestImageProcessor::testRGBImage(std::string orig, std::string deriv){
     std::ifstream origFile("../../test/testImage/" + orig +".ppm");
     std::ifstream derivFile("../../test/testImage/" + deriv + ".ppm");
 
@@ -39,6 +45,35 @@ void TestImageProcessor::testImage(std::string orig, std::string deriv){
             Image<> convolutionImg = ImageProcessor::computeConvolution(origImg, *kernelMatrix);
 
             Image<> origDerivImg;
+            derivFile >> origDerivImg;
+
+            if(convolutionImg == origDerivImg)
+                GTEST_SUCCEED();
+            else
+                GTEST_FAIL();
+
+            origFile.close();
+            derivFile.close();
+        }catch(ImageException &e){
+            cout << e.what() << "\nTerminated";
+        }
+    }
+    else
+        GTEST_FAIL();
+}
+
+void TestImageProcessor::testHSVImage(std::string orig, std::string deriv){
+    std::ifstream origFile("../../test/testImage/" + orig +".ppm");
+    std::ifstream derivFile("../../test/testImage/" + deriv + ".ppm");
+
+    if(origFile.is_open() && derivFile.is_open()){
+        try {
+            Image<HSVPixel> origImg;
+            origFile >> origImg;
+
+            Image<HSVPixel> convolutionImg = ImageProcessor::computeConvolution(origImg, *kernelMatrix);
+
+            Image<HSVPixel> origDerivImg;
             derivFile >> origDerivImg;
 
             if(convolutionImg == origDerivImg)

@@ -40,7 +40,6 @@ Image<RGBPixel> ImageProcessor::computeConvolution(const Image<RGBPixel> &img, c
 
 Image<HSVPixel> ImageProcessor::computeConvolution(const Image<HSVPixel> &img, const KernelMatrix &kernel) {
     return ImageProcessor::computeConvolution(img.convert<RGBPixel>(), kernel).convert<HSVPixel>();
-    //TODO check convolution with hsv
 }
 
 int ImageProcessor::reflect(const int m, const int x){

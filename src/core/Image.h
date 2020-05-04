@@ -145,7 +145,6 @@ private:
 
 template <>
 inline HSVPixel Image<HSVPixel>::getPixelFromStream(std::istream& is){
-    //TODO perchè ti fa l'immagine rossa? ahahahaha
     RGBPixel p;
     is >> p;
     if (!is.fail()){      //check fail case
