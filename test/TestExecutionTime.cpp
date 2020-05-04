@@ -18,8 +18,8 @@ protected:
             bigImgFile.open("../../test/testImage/ferrari.ppm");
             if (bigImgFile.is_open())
                 bigImgFile >> img;
-
-            //proc = new ImageProcessor(KernelTemplate::laplatian8, 9);
+            else
+                GTEST_FAIL();
         }catch (ImageException &e){
             GTEST_FATAL_FAILURE_(e.what());
         }
@@ -33,5 +33,8 @@ protected:
 
 
 TEST_F(DISABLED_TestExecutionTime, executionTime) {
-    //proc->applyConvolution(img);
+    KernelMatrix k(KernelTemplate::laplatian8, 3);
+
+    ImageProcessor::computeConvolution(img, k);
+
 }

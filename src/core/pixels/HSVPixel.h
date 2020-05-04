@@ -16,7 +16,7 @@ public:
     * @param h: degrees (eg. 120 (°))
     * @param s: percentage (eg. 100 (%))
     * @param v: percentage (eg. 50 (%))*/
-    explicit HSVPixel(int h = 0, double s = 0, double v = 0);
+    explicit HSVPixel(double h = 0, double s = 0, double v = 0);
 
     explicit HSVPixel(const RGBPixel &p);
 
@@ -24,11 +24,11 @@ public:
 
     /**
      * @return degrees (between 0° and 360°)*/
-    int getHue() const;
+    double getHue() const;
 
     /**
      * @param hue: degrees (between 0° and 360°)*/
-    void setHue(int hue);
+    void setHue(double hue);
 
     /**
      * @return range between 0.0 and 1.0 */
@@ -46,7 +46,7 @@ public:
      * @param saturation: range between 0.0 and 1.0 */
     void setValue(double value);
 
-    bool isEqual(const AbstractPixel &p) const override;
+    bool isEqual(AbstractPixel const &p) const override;
 
     std::ostream& toOutputStream(std::ostream &os) override;
 

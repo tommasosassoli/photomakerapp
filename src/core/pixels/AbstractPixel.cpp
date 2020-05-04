@@ -11,7 +11,7 @@ std::ostream &operator<<(std::ostream &os, AbstractPixel &p) {
     return p.toOutputStream(os);
 }
 
-bool AbstractPixel::operator==(const AbstractPixel& p) const {
+bool AbstractPixel::operator==(AbstractPixel const &p) const {
     return this->isEqual(p);
 }
 

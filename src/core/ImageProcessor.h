@@ -12,11 +12,14 @@ class ImageProcessor {
 public:
     ImageProcessor(ImageProcessor &ip) = delete;
 
-    ~ImageProcessor();
+    static Image<RGBPixel> computeConvolution(const Image<RGBPixel> &img, const KernelMatrix &kernel);
 
-    //Image computeConvolution(const Image &img, KernelMatrix &kernel);//TODO implementa la convoluzione
+    static Image<HSVPixel> computeConvolution(const Image<HSVPixel> &img, const KernelMatrix &kernel);
 
     ImageProcessor operator=(ImageProcessor &ip) = delete;
+
+private:
+    static int reflect(const int m, const int x);
 };
 
 #endif //KERNELIMAGE_IMAGEPROCESSOR_H

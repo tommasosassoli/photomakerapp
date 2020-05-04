@@ -8,7 +8,7 @@ int main() {
 
     if(imgFile.is_open()){
         try {
-            Image<> i;
+            Image<HSVPixel> i;
             imgFile >> i;
 
             /*ImageProcessor imgProc(KernelTemplate::laplatian8, 9);

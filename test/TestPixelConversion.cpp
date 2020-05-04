@@ -2,12 +2,13 @@
 // Created by tommaso on 18/04/20.
 //
 
+#include <fstream>
 #include "gtest/gtest.h"
-#include "../src/core/pixels/RGBPixel.h"
+#include "../src/core/Image.h"
 
 class TestPixelConversion : public ::testing::Test {
 protected:
-    void testHSVPixel(int r, int g, int b, int h, double s, double v);
+    void testHSVPixel(int r, int g, int b, double h, double s, double v);
 };
 
 TEST_F(TestPixelConversion, RGBtoHSV) {
@@ -27,6 +28,7 @@ TEST_F(TestPixelConversion, RGBtoHSV) {
     testHSVPixel(128, 0, 128,   300, 1, 0.50);  //purple
     testHSVPixel(0, 128, 128,   180, 1, 0.50);  //teal
     testHSVPixel(0, 0, 128,     240, 1, 0.50);  //navy
+    testHSVPixel(132, 131, 137, 250, 0.044,0.537);  //random color
 }
 
 TEST_F(TestPixelConversion, PixelTransformation){
@@ -46,7 +48,33 @@ TEST_F(TestPixelConversion, PixelTransformation){
     ASSERT_EQ(RGBPixel(122,122,153), hsvGenerated.toRGB());
 }
 
-void TestPixelConversion::testHSVPixel(int r, int g, int b, int h, double s, double v){
+TEST_F(TestPixelConversion, TestImageRGBtoHSV) {
+    std::ifstream origFile("../../test/testImage/Vd-Orig.ppm");
+
+    if(origFile.is_open()){
+        try {
+            Image<> origImg;
+            origFile >> origImg;
+
+            Image<HSVPixel> conv = origImg.convert<HSVPixel>();
+
+            Image<RGBPixel> back = conv.convert<RGBPixel>();
+
+            if(origImg == back)
+                GTEST_SUCCEED();
+            else
+                GTEST_FAIL();
+
+            origFile.close();
+        }catch(ImageException &e){
+            cout << e.what() << "\nTerminated";
+        }
+    }
+    else
+        GTEST_FAIL();
+}
+
+void TestPixelConversion::testHSVPixel(int r, int g, int b, double h, double s, double v){
     RGBPixel rgbP(r,g,b);
     HSVPixel hsvP(h,s,v);
 
@@ -54,7 +82,7 @@ void TestPixelConversion::testHSVPixel(int r, int g, int b, int h, double s, dou
     HSVPixel hsvGenerated = rgbP.toHSV();
     ASSERT_EQ(hsvP, hsvGenerated);
 
-    //transform HSV -> RGB (comeback)
+    //transform HSV -> RGB
     RGBPixel rgbGenerated = hsvP.toRGB();
     ASSERT_EQ(rgbP, rgbGenerated);
 }

@@ -5,7 +5,7 @@
 #include <cmath>
 #include "HSVPixel.h"
 
-HSVPixel::HSVPixel(int h, double s, double v) {
+HSVPixel::HSVPixel(double h, double s, double v) {
     setHue(h);
     setSaturation(s);
     setValue(v);
@@ -47,12 +47,12 @@ RGBPixel HSVPixel::toRGB() {
     return RGBPixel(*this);
 }
 
-int HSVPixel::getHue() const {
+double HSVPixel::getHue() const {
     return hue;
 }
 
-void HSVPixel::setHue(int hue) {
-    HSVPixel::hue = hue % 360;
+void HSVPixel::setHue(double hue) {
+    HSVPixel::hue = fmod(hue, 360);
 }
 
 double HSVPixel::getSaturation() const {
@@ -81,11 +81,13 @@ std::ostream & HSVPixel::toOutputStream(std::ostream &os) {
     return  this->toRGB().toOutputStream(os);
 }
 
-bool HSVPixel::isEqual(const AbstractPixel &p) const {
-    const HSVPixel *hsv = static_cast<const HSVPixel*>(&p);
-    return HSVPixel::checkval(this->hue, hsv->hue) &&
-           HSVPixel::checkval(this->saturation, hsv->saturation) &&
-           HSVPixel::checkval(this->value, hsv->value);
+bool HSVPixel::isEqual(AbstractPixel const &p) const {
+    if(HSVPixel const *hsv = dynamic_cast<HSVPixel const*>(&p)) {
+        return HSVPixel::checkval(this->hue, hsv->hue) &&
+               HSVPixel::checkval(this->saturation, hsv->saturation) &&
+               HSVPixel::checkval(this->value, hsv->value);
+    }
+    return false;
 }
 
 bool HSVPixel::checkval(double v1, double v2){
@@ -93,3 +95,5 @@ bool HSVPixel::checkval(double v1, double v2){
     int a2 = std::round(v2 * 100);
     return a1 == a2;
 }
+
+

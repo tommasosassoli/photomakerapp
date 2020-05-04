@@ -16,7 +16,7 @@ class HSVPixel;
  * */
 class RGBPixel : public AbstractPixel{
 public:
-    RGBPixel(int R = 0, int G = 0, int B = 0);
+    explicit RGBPixel(int R = 0, int G = 0, int B = 0);
 
     explicit RGBPixel(const HSVPixel &p);
 
@@ -36,11 +36,7 @@ public:
 
     void setB(int b);
 
-    RGBPixel operator*(const double lambda);
-
-    RGBPixel operator+(const RGBPixel &p);
-
-    bool isEqual(const AbstractPixel &p) const override;
+    bool isEqual(AbstractPixel const &p) const override;
 
     friend std::istream &operator>>(std::istream &is, RGBPixel &pixel);
 

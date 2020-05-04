@@ -13,7 +13,7 @@ RGBPixel::RGBPixel(int R, int G, int B) {
 
 RGBPixel::RGBPixel(const HSVPixel &p){
     double c = p.getValue() * p.getSaturation();
-    double x = c * (1 - abs((p.getHue() / 60) % 2 - 1));
+    double x = c * (1 - fabs(fmod(p.getHue() / 60, 2) - 1));
     double m = p.getValue() - c;
 
     double r, g, b;
@@ -92,14 +92,6 @@ std::ostream& RGBPixel::toOutputStream(std::ostream &os) {
     return os;
 }
 
-RGBPixel RGBPixel::operator*(const double lambda) {
-    return RGBPixel(this->R * lambda, this->G * lambda, this->B * lambda);
-}
-
-RGBPixel RGBPixel::operator+(const RGBPixel &p) {
-    return RGBPixel(this->R + p.getR(), this->G + p.getG(), this->B + p.getB());
-}
-
 std::istream &operator>>(std::istream &is, RGBPixel &pixel) {
     int r = 0;
     int g = 0;
@@ -113,8 +105,9 @@ std::istream &operator>>(std::istream &is, RGBPixel &pixel) {
     return is;
 }
 
-bool RGBPixel::isEqual(const AbstractPixel &p) const {
-    const RGBPixel *rgb = static_cast<const RGBPixel*>(&p);
-    return (this->R == rgb->R) && (this->G == rgb->G) && (this->B == rgb->B);
+bool RGBPixel::isEqual(AbstractPixel const &p) const {
+    if(RGBPixel const *rgb = dynamic_cast<RGBPixel const*>(&p))
+        return (this->R == rgb->R) && (this->G == rgb->G) && (this->B == rgb->B);
+    return false;
 }
 

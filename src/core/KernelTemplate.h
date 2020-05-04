@@ -9,10 +9,10 @@
 
 class KernelTemplate {
 public:
-    static RGBPixel identity[9];
-    static RGBPixel laplatian4[9];
-    static RGBPixel laplatian8[9];
-    static RGBPixel sharpen[9];
+    static double identity[9];
+    static double laplatian4[9];
+    static double laplatian8[9];
+    static double sharpen[9];
     //static RGBPixel boxBlur[9];
     //static const RGBPixel gaussianBlur5x5[9];
 

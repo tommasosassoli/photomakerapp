@@ -8,6 +8,7 @@
 #include <istream>
 #include "ImageException.h"
 #include "pixels/RGBPixel.h"
+#include "pixels/HSVPixel.h"
 
 template<typename TPixel = RGBPixel>
 class Image {
@@ -18,7 +19,9 @@ public:
         setHeight(height);
     }
 
-    Image(const Image& that){// deep copy of the image
+    Image(const Image& that) {// deep copy of the image
+        setHeight(that.height);
+        setWidth(that.width);
         TPixel *pixels = new TPixel[height * width];
         for(int i = 0; i < height * width; i++){
             pixels[i] = that.buffer[i];
@@ -26,33 +29,22 @@ public:
         buffer = pixels;
     }
 
-    Image* clone(){
+    Image<TPixel>* clone(){
         return new Image(*this);
+    }
+
+    Image<TPixel>& cloneInfo() const{
+        Image<TPixel> *i = new Image(this->width, this->height);
+        i->setBuffer(new TPixel[this->height * this->width]);
+        return *i;
     }
 
     ~Image(){
         delete[] buffer;
     }
 
-    Image convert(){    //TODO check conversion
-        if(std::is_same<TPixel, RGBPixel>::value) {
-            Image<HSVPixel> img(this->width, this->height);
-            HSVPixel *pixels = new HSVPixel[height * width];
-            for(int i = 0; i < height * width; i++){
-                pixels[i] = dynamic_cast<RGBPixel>(this->buffer[i]).toHSV();
-            }
-            img.setBuffer(pixels);
-        } else if (std::is_same<TPixel, HSVPixel>::value){
-            Image<RGBPixel> img(this->width, this->height);
-            RGBPixel *pixels = new RGBPixel[height * width];
-            for(int i = 0; i < height * width; i++){
-                pixels[i] = dynamic_cast<HSVPixel>(this->buffer[i]).toRGB();
-            }
-            img.setBuffer(pixels);
-        } else {
-            throw ImageException("Conversion not valid.");
-        }
-    }
+    template <typename T>
+    Image<T> convert() const;
 
     int getWidth() const{
         return width;
@@ -71,16 +63,14 @@ public:
             Image::buffer = buffer;
     }
 
-    bool isRGBImage(){
-        return (std::is_same<TPixel, RGBPixel>::value);
-    }
-
-    bool operator==(const Image& p) const{
+    bool operator==(const Image<TPixel>& p) const{
         if((this->getHeight() == p.getHeight()) &&
            (this->getWidth() == p.getWidth())){
             int eq = 0;
+            TPixel* thisBuff = this->getBuffer();
+            TPixel* pBuff = p.getBuffer();
             for(int i = 0; i < p.getHeight() * p.getWidth(); i++)
-                if (this->getBuffer()[i] == p.getBuffer()[i])
+                if (thisBuff[i] == pBuff[i])
                     eq++;
             return (eq == p.getHeight() * p.getWidth());
         }else
@@ -105,7 +95,7 @@ public:
     friend std::istream &operator>>(std::istream &is, Image &image) throw (ImageException){
         std::string format;
         is >> format;
-        if(format == "P3"){                     //check file format (.ppm)
+        if (format == "P3") {                     //check file format (.ppm)
             std::string h_s, w_s, maxVal_s;
             is >> w_s >> h_s >> maxVal_s;
 
@@ -113,15 +103,13 @@ public:
             image.height = std::stoi(h_s);
             int maxVal = std::stoi(maxVal_s);
 
-            if((image.height > 0) && (image.width > 0) && (maxVal > 0) && (maxVal <= 255)){      //check image dimensions
-                RGBPixel *pixels = new RGBPixel[image.width * image.height];      //pixel matrix
+            if ((image.height > 0) && (image.width > 0) && (maxVal > 0) && (maxVal <= 255)) {   //check image dimensions
+                TPixel *pixels = new TPixel[image.width * image.height];      //pixel matrix
 
-                for(int i = 0; i < image.width * image.height; i++){
-                    RGBPixel p;
-                    is >> p;
-                    if (!is.fail())      //check fail case
-                        pixels[i] = p;
-                    else {
+                for (int i = 0; i < image.width * image.height; i++) {
+                    try{
+                        pixels[i] = Image::getPixelFromStream(is);
+                    } catch (ImageException &e){
                         delete[] pixels;
                         throw ImageException("File corrupted.");
                     }
@@ -140,11 +128,6 @@ private:
     int height;
     TPixel *buffer {nullptr};
 
-    int reflect(const int m, const int x) const{
-        if(x < 0)   return -x-1;
-        if(x >= m)  return 2*m-x-1;
-    }
-
     void setWidth(int width){
         if(width < 0)
             width = 0;
@@ -156,6 +139,58 @@ private:
             height = 0;
         Image::height = height;
     }
+
+    static TPixel getPixelFromStream(std::istream& is);
 };
+
+template <>
+inline HSVPixel Image<HSVPixel>::getPixelFromStream(std::istream& is){
+    //TODO perchè ti fa l'immagine rossa? ahahahaha
+    RGBPixel p;
+    is >> p;
+    if (!is.fail()){      //check fail case
+        return p.toHSV();
+    } else {
+        throw ImageException("Pixel reading not possible.");
+    }
+}
+
+template <>
+inline RGBPixel Image<RGBPixel>::getPixelFromStream(std::istream& is){
+    RGBPixel p;
+    is >> p;
+    if (!is.fail()){      //check fail case
+        return p;
+    } else {
+        throw ImageException("Pixel reading not possible.");
+    }
+}
+
+template<> template <>
+inline Image<HSVPixel> Image<RGBPixel>::convert() const {        //RGB -> HSV
+    Image<HSVPixel> img(this->width, this->height);
+    HSVPixel *pixels = new HSVPixel[height * width];
+    if(this->buffer != nullptr) {
+        for (int i = 0; i < height * width; i++) {
+            pixels[i] = this->buffer[i].toHSV();
+        }
+        img.setBuffer(pixels);
+    }
+    return img;
+}
+
+template<> template <>
+inline Image<RGBPixel> Image<HSVPixel>::convert() const {        //HSV -> RGB
+    Image<RGBPixel> img(this->width, this->height);
+    RGBPixel *pixels = new RGBPixel[height * width];
+    if(this->buffer != nullptr) {
+        for (int i = 0; i < height * width; i++) {
+            pixels[i] = this->buffer[i].toRGB();
+        }
+        img.setBuffer(pixels);
+    }
+    return img;
+}
+
 
 #endif //IMAGEPARSER_IMAGE_H

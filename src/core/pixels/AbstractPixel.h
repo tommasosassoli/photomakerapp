@@ -14,12 +14,12 @@ public:
     // out << pixel (cannot be virtual)
     friend std::ostream &operator<<(std::ostream &os, AbstractPixel &p);
 
-    bool operator==(const AbstractPixel& p) const;
-
-    virtual bool isEqual(const AbstractPixel &p) const = 0;
+    bool operator==(AbstractPixel const &p) const;
 
 private:
     virtual std::ostream& toOutputStream(std::ostream &os) = 0;
+
+    virtual bool isEqual(AbstractPixel const &p) const = 0;
 };
 
 
