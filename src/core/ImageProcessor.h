@@ -12,9 +12,17 @@ class ImageProcessor {
 public:
     ImageProcessor(ImageProcessor &ip) = delete;
 
-    static Image<RGBPixel> computeConvolution(const Image<RGBPixel> &img, const KernelMatrix &kernel);
+    template <typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
+    static Image<T> computeConvolution(const Image<T> &img, const KernelMatrix &kernel);
 
-    static Image<HSVPixel> computeConvolution(const Image<HSVPixel> &img, const KernelMatrix &kernel);
+    template <typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
+    static Image<T> adjustHue(const Image<T> &img, double delta);
+
+    template <typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
+    static Image<T> adjustSaturation(const Image<T> &img, double delta);
+
+    template <typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
+    static Image<T> adjustValue(const Image<T> &img, double delta);
 
     ImageProcessor operator=(ImageProcessor &ip) = delete;
 

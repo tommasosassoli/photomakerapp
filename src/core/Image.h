@@ -33,10 +33,10 @@ public:
         return new Image(*this);
     }
 
-    Image<TPixel>& cloneInfo() const{
-        Image<TPixel> *i = new Image(this->width, this->height);
-        i->setBuffer(new TPixel[this->height * this->width]);
-        return *i;
+    Image<TPixel> cloneInfo() const{
+        Image<TPixel> i(this->width, this->height);
+        i.setBuffer(new TPixel[this->height * this->width]);
+        return i;
     }
 
     ~Image(){

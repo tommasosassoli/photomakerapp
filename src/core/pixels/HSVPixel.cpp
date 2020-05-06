@@ -91,8 +91,8 @@ bool HSVPixel::isEqual(AbstractPixel const &p) const {
 }
 
 bool HSVPixel::checkval(double v1, double v2){
-    int a1 = std::round(v1 * 100);
-    int a2 = std::round(v2 * 100);
+    double a1 = std::round(v1 * 100);
+    double a2 = std::round(v2 * 100);
     return a1 == a2;
 }
 
