@@ -94,6 +94,66 @@ TEST_F(TestImageProcessor, testCut){
         GTEST_FAIL();
 }
 
+TEST_F(TestImageProcessor, testFlip){
+    std::ifstream origFile("../../test/testImage/leo.ppm");
+    std::ifstream derivFile("../../test/testImage/leo-flip.ppm");
+
+    if(origFile.is_open() && derivFile.is_open()){
+        try {
+            Image<> origImg;
+            origFile >> origImg;
+
+            Image<> rotateImg = ImageProcessor::flip(origImg);
+
+            Image<> origDerivImg;
+            derivFile >> origDerivImg;
+
+            if(rotateImg == origDerivImg)
+                GTEST_SUCCEED();
+            else
+                GTEST_FAIL();
+
+            origFile.close();
+            derivFile.close();
+        }catch(ImageException &e){
+            cout << e.what() << "\nTerminated";
+            GTEST_FAIL();
+        }
+    }
+    else
+        GTEST_FAIL();
+}
+
+TEST_F(TestImageProcessor, testMirror){
+    std::ifstream origFile("../../test/testImage/leo.ppm");
+    std::ifstream derivFile("../../test/testImage/leo-mirror.ppm");
+
+    if(origFile.is_open() && derivFile.is_open()){
+        try {
+            Image<> origImg;
+            origFile >> origImg;
+
+            Image<> rotateImg = ImageProcessor::mirror(origImg);
+
+            Image<> origDerivImg;
+            derivFile >> origDerivImg;
+
+            if(rotateImg == origDerivImg)
+                GTEST_SUCCEED();
+            else
+                GTEST_FAIL();
+
+            origFile.close();
+            derivFile.close();
+        }catch(ImageException &e){
+            cout << e.what() << "\nTerminated";
+            GTEST_FAIL();
+        }
+    }
+    else
+        GTEST_FAIL();
+}
+
 void TestImageProcessor::testRGBImage(std::string orig, std::string deriv){
     std::ifstream origFile("../../test/testImage/" + orig +".ppm");
     std::ifstream derivFile("../../test/testImage/" + deriv + ".ppm");
