@@ -31,11 +31,11 @@ protected:
 
     void testHSVImage(std::string orig, std::string deriv);
 
-    void testHue(const std::string deriv, const double delta);
+    void testHue(const std::string& deriv, double delta);
 
-    void testSaturation(const std::string deriv, const double delta);
+    void testSaturation(const std::string& deriv, double delta);
 
-    void testBrightness(const std::string deriv, const double delta);
+    void testBrightness(const std::string& deriv, double delta);
 };
 
 TEST_F(TestImageProcessor, testRGBConvolution) {
@@ -62,6 +62,36 @@ TEST_F(TestImageProcessor, testBrightness){
     testBrightness("bridge-v-100", -1);
     testBrightness("bridge-v100", 1);
     testBrightness("bridge-v50", 0.5);
+}
+
+TEST_F(TestImageProcessor, testCut){
+    std::ifstream origFile("../../test/testImage/leo.ppm");
+    std::ifstream derivFile("../../test/testImage/leo-cut.ppm");
+
+    if(origFile.is_open() && derivFile.is_open()){
+        try {
+            Image<> origImg;
+            origFile >> origImg;
+
+            Image<> cutImg = ImageProcessor::cut(origImg, 5, 210, 250, 520);
+
+            Image<> origDerivImg;
+            derivFile >> origDerivImg;
+
+            if(cutImg == origDerivImg)
+                GTEST_SUCCEED();
+            else
+                GTEST_FAIL();
+
+            origFile.close();
+            derivFile.close();
+        }catch(ImageException &e){
+            cout << e.what() << "\nTerminated";
+            GTEST_FAIL();
+        }
+    }
+    else
+        GTEST_FAIL();
 }
 
 void TestImageProcessor::testRGBImage(std::string orig, std::string deriv){
@@ -122,7 +152,7 @@ void TestImageProcessor::testHSVImage(std::string orig, std::string deriv){
         GTEST_FAIL();
 }
 
-void TestImageProcessor::testHue(const std::string deriv, const double delta) {
+void TestImageProcessor::testHue(const std::string& deriv, const double delta) {
     std::ifstream derivFile("../../test/testImage/hsv-space/" + deriv + ".ppm");
     if(derivFile.is_open()) {
         Image<RGBPixel> origDerivImg;
@@ -139,7 +169,7 @@ void TestImageProcessor::testHue(const std::string deriv, const double delta) {
         GTEST_FAIL();
 }
 
-void TestImageProcessor::testSaturation(const std::string deriv, const double delta) {
+void TestImageProcessor::testSaturation(const std::string& deriv, const double delta) {
     std::ifstream derivFile("../../test/testImage/hsv-space/" + deriv + ".ppm");
     if(derivFile.is_open()) {
         Image<RGBPixel> origDerivImg;
@@ -156,7 +186,7 @@ void TestImageProcessor::testSaturation(const std::string deriv, const double de
         GTEST_FAIL();
 }
 
-void TestImageProcessor::testBrightness(const std::string deriv, const double delta) {
+void TestImageProcessor::testBrightness(const std::string& deriv, const double delta) {
     std::ifstream derivFile("../../test/testImage/hsv-space/" + deriv + ".ppm");
     if(derivFile.is_open()) {
         Image<RGBPixel> origDerivImg;

@@ -6,6 +6,7 @@
 #define IMAGEPARSER_IMAGE_H
 
 #include <istream>
+#include <sstream>
 #include "ImageException.h"
 #include "pixels/RGBPixel.h"
 #include "pixels/HSVPixel.h"
@@ -40,7 +41,8 @@ public:
     }
 
     ~Image(){
-        delete[] buffer;
+        if(buffer != nullptr)
+            delete[] buffer;
     }
 
     template <typename T>
@@ -93,11 +95,13 @@ public:
     }
 
     friend std::istream &operator>>(std::istream &is, Image &image) throw (ImageException){
+        std::stringstream ss;
+        preprocessStream(is, ss);
         std::string format;
-        is >> format;
+        ss >> format;
         if (format == "P3") {                     //check file format (.ppm)
             std::string h_s, w_s, maxVal_s;
-            is >> w_s >> h_s >> maxVal_s;
+            ss >> w_s >> h_s >> maxVal_s;
 
             image.width = std::stoi(w_s);
             image.height = std::stoi(h_s);
@@ -108,7 +112,7 @@ public:
 
                 for (int i = 0; i < image.width * image.height; i++) {
                     try{
-                        pixels[i] = Image::getPixelFromStream(is);
+                        pixels[i] = Image::getPixelFromStream(ss);
                     } catch (ImageException &e){
                         delete[] pixels;
                         throw ImageException("File corrupted.");
@@ -138,6 +142,17 @@ private:
         if(height < 0)
             height = 0;
         Image::height = height;
+    }
+
+    static void preprocessStream(std::istream& is, std::stringstream& os){
+        char c;
+        while(!is.eof()){
+            c = is.get();
+            if(c == 35)
+                is.ignore(4095, '\n');
+            else
+                os.put(c);
+        }
     }
 
     static TPixel getPixelFromStream(std::istream& is);
