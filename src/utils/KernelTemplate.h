@@ -5,7 +5,7 @@
 #ifndef KERNELIMAGE_KERNELTEMPLATE_H
 #define KERNELIMAGE_KERNELTEMPLATE_H
 
-#include "pixels/RGBPixel.h"
+#include "../model/RGBPixel.h"
 
 class KernelTemplate {
 public:

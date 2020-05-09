@@ -4,7 +4,7 @@
 
 #include <fstream>
 #include "gtest/gtest.h"
-#include "../src/core/Image.h"
+#include "../src/model/Image.h"
 
 class TestPixelConversion : public ::testing::Test {
 protected:

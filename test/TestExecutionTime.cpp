@@ -4,9 +4,9 @@
 
 #include <fstream>
 #include "gtest/gtest.h"
-#include "../src/core/Image.h"
+#include "../src/model/Image.h"
 #include "../src/core/ImageProcessor.h"
-#include "../src/core/KernelTemplate.h"
+#include "../src/utils/KernelTemplate.h"
 
 class DISABLED_TestExecutionTime : public ::testing::Test {
 protected:

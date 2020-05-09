@@ -6,8 +6,8 @@
 #define KERNELIMAGE_IMAGEPROCESSOR_H
 
 #include <cmath>
-#include "KernelMatrix.h"
-#include "Image.h"
+#include "../model/KernelMatrix.h"
+#include "../model/Image.h"
 
 class ImageProcessor {
 public:

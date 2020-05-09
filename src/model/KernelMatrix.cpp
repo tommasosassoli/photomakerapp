@@ -3,7 +3,7 @@
 //
 
 #include "KernelMatrix.h"
-#include "ImageException.h"
+#include "../core/ImageException.h"
 
 KernelMatrix::KernelMatrix(double *kernel, const int dim) {
     setDim(dim);

@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include "core/Image.h"
+#include "model/Image.h"
 
 int main() {
     std::string path = std::string(std::getenv("HOME")) + std::string("/Pictures/animal.ppm");

@@ -7,9 +7,9 @@
 
 #include <istream>
 #include <sstream>
-#include "ImageException.h"
-#include "pixels/RGBPixel.h"
-#include "pixels/HSVPixel.h"
+#include "../core/ImageException.h"
+#include "RGBPixel.h"
+#include "HSVPixel.h"
 
 template<typename TPixel = RGBPixel>
 class Image {

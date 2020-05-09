@@ -1,12 +1,22 @@
 cmake_minimum_required(VERSION 3.15)
 
+
+add_subdirectory(model)
 add_subdirectory(core)
+add_subdirectory(utils)
 
 add_executable(photomakerapp main.cpp)
 
-target_link_libraries(photomakerapp photomakerapp_core_lib)
+target_link_libraries(photomakerapp
+        photomakerapp_model_lib
+        photomakerapp_core_lib
+        photomakerapp_utils_lib)
 
-set_target_properties(photomakerapp photomakerapp_core_lib
+set_target_properties(photomakerapp
+        photomakerapp_model_lib
+        photomakerapp_core_lib
+        photomakerapp_utils_lib
+
         PROPERTIES
         ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/photomakerapp/lib"
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/photomakerapp")
