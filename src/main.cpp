@@ -1,29 +1,12 @@
-#include <fstream>
-#include <iostream>
-#include "model/Image.h"
 
-int main() {
-    std::string path = std::string(std::getenv("HOME")) + std::string("/Pictures/animal.ppm");
-    std::ifstream imgFile(path);
+#include <QApplication>
+#include "view/MainView.h"
 
-    if(imgFile.is_open()){
-        try {
-            Image<HSVPixel> i;
-            imgFile >> i;
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
 
-            /*ImageProcessor imgProc(KernelTemplate::laplatian8, 9);
-            Image sharpImg = imgProc.applyConvolution(i);*/
+    MainView v;
+    v.show();
 
-            std::string path2 = std::string(std::getenv("HOME")) + std::string("/Pictures/generated_animal.ppm");
-            std::ofstream outFile(path2);
-            outFile << i;
-
-            outFile.close();
-            imgFile.close();
-        }catch(ImageException &e){
-            std::cout << e.what() << "\nTerminated";
-        }
-
-    }
-    return 0;
+    return app.exec();
 }
