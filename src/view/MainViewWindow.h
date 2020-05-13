@@ -8,6 +8,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
 #include "subwidgets/LeftMenuBar.h"
 #include "subwidgets/AbstractSheet.h"
 #include "subwidgets/CropSheet.h"
@@ -30,13 +31,17 @@ public:
         //horizontal layout initialization
         hBox = new QHBoxLayout(mainWidget);
 
-        //first column initialization
+        //first column initialization (sheet selection)
         firstCol = new LeftMenuBar(mainWidget, view);
         hBox->addWidget(firstCol->getWidget());
 
-        //second column initialization
+        //second column initialization (effect sheet)
         secondCol = new CropSheet(mainWidget);
         hBox->addWidget(secondCol->getSheet());
+
+        //third column initialization (image)
+        imgLabel = new QLabel(mainWidget);
+        hBox->addWidget(imgLabel);
 
         //setting layout
         mainWidget->setLayout(hBox);
@@ -48,6 +53,14 @@ public:
     ~MainViewWindow(){
         delete firstCol;
         delete secondCol;
+        delete qimage;
+    }
+
+    void setImage(QImage* img) {
+        if(qimage != nullptr)
+            delete qimage;
+        qimage = img;
+        imgLabel->setPixmap(QPixmap::fromImage(*qimage));
     }
 
     void setCropSheet() {
@@ -68,14 +81,15 @@ private:
     //horizontal layout
     QHBoxLayout* hBox {nullptr};
 
-    //first column (effect selection)
+    //first column (sheet selection)
     LeftMenuBar* firstCol {nullptr};
 
     //second column (effect sheet)
     AbstractSheet* secondCol {nullptr};
 
     //third column (image)
-    QImage* image {nullptr};
+    QLabel* imgLabel {nullptr};
+    QImage* qimage {nullptr};
 
 
     void setSheet(AbstractSheet* sheet) {

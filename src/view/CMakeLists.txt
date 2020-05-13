@@ -5,6 +5,8 @@ set(SOURCE_FILES
         MainViewWindow.h
         subwidgets/AbstractSheet.h
         subwidgets/LeftMenuBar.h
-        subwidgets/CropSheet.h subwidgets/ColorSheet.h subwidgets/FilterSheet.h)
+        subwidgets/CropSheet.h
+        subwidgets/ColorSheet.h
+        subwidgets/FilterSheet.h)
 
 add_library(photomakerapp_views_lib ${SOURCE_FILES})

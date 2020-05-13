@@ -20,9 +20,13 @@ private slots:
     void setCropSheet();
     void setColorSheet();
     void setFilterSheet();
+    void openImage();
+    void saveImage();
 
 private:
     MainViewWindow* ui;
+    //Image* img;   //TODO image
+    //CommandHandler cmdHandler;    //TODO command pattern
 };
 
 

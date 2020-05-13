@@ -10,6 +10,7 @@ MainView::MainView(QWidget *parent) : QMainWindow(parent), ui(new MainViewWindow
 
 MainView::~MainView() {
     delete ui;
+    //delete img;
 }
 
 void MainView::setCropSheet() {
@@ -22,4 +23,13 @@ void MainView::setColorSheet() {
 
 void MainView::setFilterSheet() {
     ui->setFilterSheet();
+}
+
+void MainView::openImage() {
+    //TODO open image
+    //ui->setImage( QImage );
+}
+
+void MainView::saveImage() {
+    //TODO save image
 }
