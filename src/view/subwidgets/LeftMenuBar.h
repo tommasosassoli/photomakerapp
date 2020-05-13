@@ -9,8 +9,9 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
+#include "AbstractSheet.h"
 
-class LeftMenuBar {
+class LeftMenuBar : public AbstractSheet {
 public:
     LeftMenuBar(QWidget* parent, QMainWindow* mainView){
         this->mainView = mainView;
@@ -19,11 +20,11 @@ public:
 
     void setupUi(QWidget* parent){
         menu = new QGroupBox(parent);
-        QPushButton* cropButton = new QPushButton("Crop", menu);
-        QPushButton* colorButton = new QPushButton("Colors", menu);
-        QPushButton* filterButton = new QPushButton("Filters", menu);
-        QPushButton* openButton = new QPushButton("Open", menu);
-        QPushButton* saveButton = new QPushButton("Save", menu);
+        QPushButton* cropButton = createIconButton("crop", menu);
+        QPushButton* colorButton = createIconButton("color", menu);
+        QPushButton* filterButton = createIconButton("filter", menu);
+        QPushButton* openButton = createIconButton("open", menu);
+        QPushButton* saveButton = createIconButton("save", menu);
 
         QVBoxLayout* layout = new QVBoxLayout(menu);
         layout->addWidget(cropButton);
@@ -36,7 +37,7 @@ public:
         layout->setAlignment(Qt::AlignCenter);
 
         menu->setLayout(layout);
-        menu->setMaximumWidth(100);
+        menu->setMaximumWidth(150);
 
         // events
         QObject::connect(cropButton, SIGNAL(clicked()), mainView, SLOT(setCropSheet()));

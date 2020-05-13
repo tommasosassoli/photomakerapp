@@ -6,6 +6,7 @@
 #define PHOTOMAKERAPP_ABSTRACTSHEET_H
 
 #include <QtWidgets/QWidget>
+#include <QFile>
 
 class AbstractSheet {
 public:
@@ -21,6 +22,22 @@ public:
 
 protected:
     QGroupBox* sheet;
+
+    QPushButton* createIconButton(QString buttonName, QWidget* parent) {
+        QPushButton* button = new QPushButton(parent);
+        QString path = "resources/" + buttonName + ".svg";
+
+        if(QFile::exists(path)){
+            button->setIcon(QIcon(path));
+            button->setIconSize(QSize(30,30));
+        } else
+            button->setText(buttonName);
+
+        //button->setWhatsThis()
+        button->setMinimumSize(130, 40);
+        button->setStyleSheet("background-color: rgba(255,255,255,0);");
+        return button;
+    }
 };
 
 
