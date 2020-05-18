@@ -9,7 +9,7 @@
 #include "../model/KernelMatrix.h"
 #include "../model/Image.h"
 
-class ImageProcessor {
+class ImageProcessor {  //TODO pensa a insieme di functions
 public:
     ImageProcessor(ImageProcessor &ip) = delete;
 
@@ -26,7 +26,7 @@ public:
     static Image<T> adjustValue(const Image<T> &img, double delta);
 
     template <typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
-    static Image<T> cut(const Image<T> &img, const int x1, const int y1, const int x2, const int y2);
+    static Image<T> crop(const Image<T> &img, int x1, int y1, int x2, int y2);
 
     template <typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
     static Image<T> flip(const Image<T> &img);
@@ -34,16 +34,20 @@ public:
     template <typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
     static Image<T> mirror(const Image<T> &img);
 
+    //TODO implementa filtro su ritaglio
+
+    //TODO rotazione (90 gradi)
+
     ImageProcessor operator=(ImageProcessor &ip) = delete;
 
 private:
-    static int reflect(const int m, const int x);
+    static int reflect(int m, int x);
 };
 
 //  CUT
 
 template<typename T, typename>
-Image<T> ImageProcessor::cut(const Image<T> &img, const int x1, const int y1, const int x2, const int y2) {//TODO crop
+Image<T> ImageProcessor::crop(const Image<T> &img, int x1, int y1, int x2, int y2) {
     if((x2 > x1) && (y2 > y1) &&
        (x1 >= 0) && (y1 >= 0) &&
        (x2 < img.getHeight()) && (y2 < img.getWidth())){
@@ -62,7 +66,7 @@ Image<T> ImageProcessor::cut(const Image<T> &img, const int x1, const int y1, co
 
         return newimg;
     } else
-        throw ImageException("Dimensions for cut are not valid.");
+        throw ImageException("Dimensions for crop are not valid.");
 }
 
 

@@ -66,14 +66,14 @@ TEST_F(TestImageProcessor, testBrightness){
 
 TEST_F(TestImageProcessor, testCut){
     std::ifstream origFile("../../test/testImage/leo.ppm");
-    std::ifstream derivFile("../../test/testImage/leo-cut.ppm");
+    std::ifstream derivFile("../../test/testImage/leo-crop.ppm");
 
     if(origFile.is_open() && derivFile.is_open()){
         try {
             Image<> origImg;
             origFile >> origImg;
 
-            Image<> cutImg = ImageProcessor::cut(origImg, 5, 210, 250, 520);
+            Image<> cutImg = ImageProcessor::crop(origImg, 5, 210, 250, 520);
 
             Image<> origDerivImg;
             derivFile >> origDerivImg;

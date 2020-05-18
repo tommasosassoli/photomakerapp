@@ -26,7 +26,7 @@ Image<RGBPixel> ImageProcessor::computeConvolution(const Image<RGBPixel> &img, c
         for(int c = 0; c < width; c++){
             int pr = 0, pg = 0, pb = 0;
             for(int i = 0; i < kernelDim; i++) {
-                for (int j = 0; j < kernelDim; j++) {
+                for (int j = 0; j < kernelDim; j++) {//FIXME pensa al valore nullo
                     pixelVal = imgBuff[reflect(height, r + i - dev) * width + reflect(width, c + j - dev)];
                     kernelVal = kernelBuf[(kernelDim - i - 1) * kernelDim + (kernelDim - j - 1)];
 

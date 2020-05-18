@@ -9,7 +9,7 @@
 #include <iostream>
 #include "MainViewWindow.h"
 
-class MainView : public QMainWindow {
+class MainView : public QMainWindow {   //TODO implementa MVC (controller con CommandHandler ?)
     Q_OBJECT;
 public:
     explicit MainView(QWidget *parent = 0);
