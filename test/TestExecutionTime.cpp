@@ -5,7 +5,7 @@
 #include <fstream>
 #include "gtest/gtest.h"
 #include "../src/model/Image.h"
-#include "../src/core/ImageProcessor.h"
+#include "../src/core/ImageProcessor.cpp"
 #include "../src/utils/KernelTemplate.h"
 
 class DISABLED_TestExecutionTime : public ::testing::Test {

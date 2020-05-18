@@ -4,7 +4,7 @@
 
 #include <fstream>
 #include "gtest/gtest.h"
-#include "../src/core/ImageProcessor.h"
+#include "../src/core/ImageProcessor.cpp"
 
 class TestImageProcessor : public ::testing::Test {
 protected:
