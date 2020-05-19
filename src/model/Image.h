@@ -94,7 +94,7 @@ public:
         return os;
     }
 
-    friend std::istream &operator>>(std::istream &is, Image &image) throw (ImageException){
+    friend std::istream &operator>>(std::istream &is, Image &image) {
         std::stringstream ss;
         preprocessStream(is, ss);
         std::string format;
