@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.15)
 set( RESOURCE_FILES
         crop.svg
         color.svg
-        filter.svg
+        filters.svg
         open.svg
         save.svg
         redo.svg

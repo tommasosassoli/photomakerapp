@@ -9,11 +9,11 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
-#include "subwidgets/LeftMenuBar.h"
 #include "subwidgets/AbstractSheet.h"
 #include "subwidgets/CropSheet.h"
 #include "subwidgets/ColorSheet.h"
 #include "subwidgets/FilterSheet.h"
+#include "subwidgets/TopMenuBar.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -31,17 +31,16 @@ public:
         //horizontal layout initialization
         hBox = new QHBoxLayout(mainWidget);
 
-        //first column initialization (sheet selection)
-        firstCol = new LeftMenuBar(mainWidget, view);
-        hBox->addWidget(firstCol->getWidget());
+        menuBar = new TopMenuBar(view);
+        view->setMenuWidget(menuBar->getMenu());
 
-        //second column initialization (effect sheet)
-        secondCol = new CropSheet(mainWidget);
-        hBox->addWidget(secondCol->getSheet());
+        //effect sheet
+        effectSheet = new CropSheet(mainWidget);
+        hBox->insertWidget(1, effectSheet->getSheet());
 
-        //third column initialization (image)
+        //image
         imgLabel = new QLabel(mainWidget);
-        hBox->addWidget(imgLabel);
+        hBox->insertWidget(0, imgLabel);
 
         //setting layout
         mainWidget->setLayout(hBox);
@@ -51,8 +50,8 @@ public:
     }
 
     ~MainViewWindow(){
-        delete firstCol;
-        delete secondCol;
+        delete menuBar;
+        delete effectSheet;
         delete qimage;
     }
 
@@ -81,11 +80,11 @@ private:
     //horizontal layout
     QHBoxLayout* hBox {nullptr};
 
-    //first column (sheet selection)
-    LeftMenuBar* firstCol {nullptr};
+    //top menu bar
+    TopMenuBar* menuBar {nullptr};
 
     //second column (effect sheet)
-    AbstractSheet* secondCol {nullptr};
+    AbstractSheet* effectSheet {nullptr};
 
     //third column (image)
     QLabel* imgLabel {nullptr};
@@ -93,10 +92,10 @@ private:
 
 
     void setSheet(AbstractSheet* sheet) {
-        if(secondCol != nullptr)
-            delete secondCol;
-        secondCol = sheet;
-        hBox->insertWidget(1, secondCol->getSheet());
+        if(effectSheet != nullptr)
+            delete effectSheet;
+        effectSheet = sheet;
+        hBox->insertWidget(1, effectSheet->getSheet());
     }
 };
 
