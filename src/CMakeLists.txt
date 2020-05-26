@@ -11,6 +11,7 @@ include_directories(${Qt5Widgets_INCLUDE_DIRS})
 add_subdirectory(model)
 add_subdirectory(core)
 add_subdirectory(utils)
+#add_subdirectory(command)
 add_subdirectory(view)
 
 #Executable

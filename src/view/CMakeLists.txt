@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.15)
 
 set(SOURCE_FILES
+        Subject.h
+        Observer.h
+        ImageWrapper.h ImageWrapper.cpp
+        MainViewController.h MainViewController.cpp
         MainView.h MainView.cpp
         MainViewWindow.h
         subwidgets/AbstractSheet.h

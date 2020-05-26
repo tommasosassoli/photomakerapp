@@ -6,15 +6,19 @@
 #define PHOTOMAKERAPP_MAINVIEW_H
 
 #include <QMainWindow>
-#include <iostream>
 #include "MainViewWindow.h"
+#include "ImageWrapper.h"
+#include "MainViewController.h"
 
-class MainView : public QMainWindow {   //TODO implementa MVC (controller con CommandHandler ?)
+//view
+class MainView : public QMainWindow, Observer {
     Q_OBJECT;
 public:
-    explicit MainView(QWidget *parent = 0);
+    explicit MainView(ImageWrapper* imgWrap, MainViewController* controller, QWidget *parent = 0);
 
     ~MainView();
+
+    void update() override;
 
 private slots:
     void setCropSheet();
@@ -22,11 +26,12 @@ private slots:
     void setFilterSheet();
     void openImage();
     void saveImage();
+    void closeApp();
 
 private:
     MainViewWindow* ui;
-    //Image* img;   //TODO image
-    //CommandHandler cmdHandler;    //TODO command pattern
+    ImageWrapper* imageWrapper;
+    MainViewController* controller;
 };
 
 

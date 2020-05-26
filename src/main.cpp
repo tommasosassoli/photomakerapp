@@ -5,8 +5,16 @@
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    MainView v;
-    v.show();
+    Image<> i;
+    i.setBuffer(new RGBPixel[1]);
+    i.getBuffer()->setR(20);
+    i.getBuffer()->getR();
+
+    ImageWrapper imageWrapper;
+    MainViewController controller(&imageWrapper);
+    MainView view(&imageWrapper, &controller);
+
+    view.show();
 
     return app.exec();
 }

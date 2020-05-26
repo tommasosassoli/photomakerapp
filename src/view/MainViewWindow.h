@@ -56,8 +56,7 @@ public:
     }
 
     void setImage(QImage* img) {
-        if(qimage != nullptr)
-            delete qimage;
+        delete qimage;
         qimage = img;
         imgLabel->setPixmap(QPixmap::fromImage(*qimage));
     }

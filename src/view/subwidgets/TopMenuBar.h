@@ -59,6 +59,10 @@ public:
         menuBar->addMenu(sheetMenu);
 
         // events
+        QObject::connect(openAct, SIGNAL(triggered()), parent, SLOT(openImage()));
+        QObject::connect(saveAct, SIGNAL(triggered()), parent, SLOT(saveImage()));
+        QObject::connect(closeAct, SIGNAL(triggered()), parent, SLOT(closeApp()));
+
         QObject::connect(cropAct, SIGNAL(triggered()), parent, SLOT(setCropSheet()));
         QObject::connect(colorAct, SIGNAL(triggered()), parent, SLOT(setColorSheet()));
         QObject::connect(filterAct, SIGNAL(triggered()), parent, SLOT(setFilterSheet()));
