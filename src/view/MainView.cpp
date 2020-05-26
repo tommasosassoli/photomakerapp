@@ -69,6 +69,7 @@ void MainView::update() {
 
     QImage *qImg = new QImage(arr, width, height, QImage::Format_RGB888);  //Format_RGB888: RGB 24 bits per pixel
     ui->setImage(qImg);
+    delete arr;
 }
 
 void MainView::closeApp() {
