@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include "MainViewController.h"
+#include "../command/FlipCommand.h"
 
 MainViewController::MainViewController(ImageWrapper *imageWrapper) : imageWrapper(imageWrapper) {
 }
@@ -13,10 +14,12 @@ void MainViewController::openImage(std::string path) {
 
     if(imgFile.is_open()) {
         try {
-            Image<> *i = new Image<>;
-            imgFile >> *i;
+            Image<> i;
+            imgFile >> i;
 
-            imageWrapper->setImage(i);
+            shared_ptr<Image<>> shrImg = std::make_shared<Image<>>(i);
+
+            imageWrapper->setImage(shrImg);
 
             imgFile.close();
         } catch (ImageException &e) {
@@ -27,7 +30,7 @@ void MainViewController::openImage(std::string path) {
 
 void MainViewController::saveImage(std::string path) {
     std::ofstream outFile(path);
-    Image<>* img = imageWrapper->getImage();
+    Image<>* img = imageWrapper->getImage().get();
 
     if(outFile.is_open()){
         if(img != nullptr) {
@@ -37,4 +40,11 @@ void MainViewController::saveImage(std::string path) {
             throw runtime_error("No image opened");
     } else
         throw runtime_error("Cannot save the file");
+}
+
+void MainViewController::makeFlip() {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    std::shared_ptr<FlipCommand> flip = std::make_shared<FlipCommand>(img);
+    cmdHandler.registerAndExecute(flip);
+    imageWrapper->setImage(flip->getParsedImage());
 }

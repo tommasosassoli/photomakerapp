@@ -28,6 +28,7 @@ private slots:
     void setFilterSheet();
     void openImage();
     void saveImage();
+    void makeFlip();
     void closeApp();
 
 private:

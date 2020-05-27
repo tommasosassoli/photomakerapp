@@ -56,8 +56,12 @@ void MainView::saveImage() {
         QMessageBox::information(this, "Photo Maker APP", "No image opened");
 }
 
+void MainView::makeFlip() {
+    controller->makeFlip();
+}
+
 void MainView::update() {
-    Image<>* img = imageWrapper->getImage();
+    Image<>* img = imageWrapper->getImage().get();
 
     int width = img->getWidth();
     int height = img->getHeight();

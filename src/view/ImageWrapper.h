@@ -6,17 +6,16 @@
 #define PHOTOMAKERAPP_IMAGEWRAPPER_H
 
 #include <list>
+#include <memory>
 #include "../model/Image.h"
 #include "Subject.h"
 
 //model
 class ImageWrapper : public Subject {
 public:
-    ImageWrapper(Image<>* img = 0);
+    void setImage(shared_ptr<Image<>> img);
 
-    void setImage(Image<>* img);
-
-    Image<>* getImage() const;
+    shared_ptr<Image<>> getImage() const;
 
     void notify() override;
 
@@ -25,7 +24,7 @@ public:
     void removeObserver(Observer* o) override;
 
 private:
-    Image<>* img {nullptr}; //TODO shared pointer (with commands)
+    shared_ptr<Image<>> img;
 
     std::list<Observer*> observers;
 };

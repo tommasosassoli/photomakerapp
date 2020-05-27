@@ -6,6 +6,7 @@
 #define PHOTOMAKERAPP_MAINVIEWCONTROLLER_H
 
 #include "ImageWrapper.h"
+#include "../command/CommandHandler.h"
 
 //controller
 class MainViewController {
@@ -16,9 +17,12 @@ public:
 
     void saveImage(std::string path);
 
+    void makeFlip();
+
 private:
     ImageWrapper* imageWrapper;
-    //CommandHandler cmdHandler;
+
+    CommandHandler cmdHandler;
 };
 
 

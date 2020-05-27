@@ -32,6 +32,8 @@ public:
 
         sheet->setLayout(layout);
         sheet->setMaximumWidth(200);
+
+        QObject::connect(flipButton, SIGNAL(clicked()), parent, SLOT(makeFlip()));
     }
 };
 

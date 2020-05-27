@@ -4,18 +4,13 @@
 
 #include "ImageWrapper.h"
 
-ImageWrapper::ImageWrapper(Image<> *img) {
-    setImage(img);
-}
-
-void ImageWrapper::setImage(Image<> *img) {
-    delete this->img;
-    this->img = img;
+void ImageWrapper::setImage(shared_ptr<Image<>> img) {
+    this->img = std::move(img);
     notify();
 }
 
-Image<> *ImageWrapper::getImage() const {
-    return this->img;
+shared_ptr<Image<>> ImageWrapper::getImage() const {
+    return img;
 }
 
 void ImageWrapper::notify() {
