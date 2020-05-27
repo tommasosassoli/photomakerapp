@@ -41,15 +41,18 @@ void MainView::openImage() {
 }
 
 void MainView::saveImage() {
-    QString filter = "ppm file (*.ppm)";
-    QUrl url = QFileDialog::getSaveFileUrl(this, "Save file", QUrl(), filter, &filter);
-    if(!url.isEmpty()) {
-        try {
-            controller->saveImage(url.path().toStdString());
-        } catch (runtime_error &e) {
-            QMessageBox::information(this, "Photo Maker APP", e.what());
+    if(imageWrapper->getImage() != nullptr) {
+        QString filter = "ppm file (*.ppm)";
+        QUrl url = QFileDialog::getSaveFileUrl(this, "Save file", QUrl(), filter, &filter);
+        if (!url.isEmpty()) {
+            try {
+                controller->saveImage(url.path().toStdString());
+            } catch (runtime_error &e) {
+                QMessageBox::information(this, "Photo Maker APP", e.what());
+            }
         }
-    }
+    } else
+        QMessageBox::information(this, "Photo Maker APP", "No image opened");
 }
 
 void MainView::update() {

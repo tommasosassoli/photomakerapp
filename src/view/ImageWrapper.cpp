@@ -9,7 +9,7 @@ ImageWrapper::ImageWrapper(Image<> *img) {
 }
 
 void ImageWrapper::setImage(Image<> *img) {
-    delete img;
+    delete this->img;
     this->img = img;
     notify();
 }

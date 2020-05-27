@@ -25,7 +25,7 @@ public:
     void removeObserver(Observer* o) override;
 
 private:
-    Image<>* img {nullptr};
+    Image<>* img {nullptr}; //TODO shared pointer (with commands)
 
     std::list<Observer*> observers;
 };
