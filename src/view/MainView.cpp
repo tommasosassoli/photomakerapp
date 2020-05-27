@@ -33,6 +33,7 @@ void MainView::openImage() {
     QUrl url = QFileDialog::getOpenFileUrl(this, "Open a file", QUrl(), "ppm file (*.ppm)");
     if(!url.isEmpty()) {
         try {
+            ui->setLoadingState();
             controller->openImage(url.path().toStdString());
         } catch (runtime_error &e) {
             QMessageBox::information(this, "Photo Maker APP", e.what());
@@ -70,9 +71,13 @@ void MainView::update() {
         arr[j + 2] = buffer[i].getB();
     }
 
-    QImage *qImg = new QImage(arr, width, height, QImage::Format_RGB888);  //Format_RGB888: RGB 24 bits per pixel
+    QImage qImg(arr, width, height, QImage::Format_RGB888);  //Format_RGB888: RGB 24 bits per pixel
     ui->setImage(qImg);
     delete arr;
+}
+
+void MainView::resizeEvent(QResizeEvent *event) {
+    ui->adjustImageSize();
 }
 
 void MainView::closeApp() {

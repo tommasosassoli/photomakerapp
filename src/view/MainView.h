@@ -20,6 +20,8 @@ public:
 
     void update() override;
 
+    void resizeEvent(QResizeEvent* event);
+
 private slots:
     void setCropSheet();
     void setColorSheet();

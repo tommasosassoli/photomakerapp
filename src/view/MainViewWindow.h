@@ -21,7 +21,7 @@ class MainViewWindow {
 public:
     void setupUi(QMainWindow* view){
         //global settings
-        view->resize(500, 400);
+        view->resize(900, 600);
         view->setWindowTitle(QStringLiteral("Photo Maker APP"));
         //view->setStyleSheet("background-color:rgb(60,60,60)");
 
@@ -40,6 +40,8 @@ public:
 
         //image
         imgLabel = new QLabel(mainWidget);
+        imgLabel->setText("Open an image to start");
+        imgLabel->setAlignment(Qt::AlignCenter);
         hBox->insertWidget(0, imgLabel);
 
         //setting layout
@@ -52,13 +54,24 @@ public:
     ~MainViewWindow(){
         delete menuBar;
         delete effectSheet;
-        delete qimage;
     }
 
-    void setImage(QImage* img) {
-        delete qimage;
-        qimage = img;
-        imgLabel->setPixmap(QPixmap::fromImage(*qimage));
+    void setLoadingState() {
+        imgLabel->setText("Just a moment...");
+        imgLabel->repaint();
+    }
+
+    void setImage(QImage& img) {
+        qpixmap = QPixmap::fromImage(img);
+        adjustImageSize();
+    }
+
+    void adjustImageSize() {
+        if(qpixmap.height() > imgLabel->height() || qpixmap.width() > imgLabel->width())
+            imgLabel->setPixmap(qpixmap.scaled(imgLabel->width(), imgLabel->height(),
+                    Qt::KeepAspectRatio));
+        else
+            imgLabel->setPixmap(qpixmap);
     }
 
     void setCropSheet() {
@@ -82,12 +95,12 @@ private:
     //top menu bar
     TopMenuBar* menuBar {nullptr};
 
-    //second column (effect sheet)
+    //effect sheet
     AbstractSheet* effectSheet {nullptr};
 
-    //third column (image)
+    //image
     QLabel* imgLabel {nullptr};
-    QImage* qimage {nullptr};
+    QPixmap qpixmap;
 
 
     void setSheet(AbstractSheet* sheet) {
