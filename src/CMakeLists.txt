@@ -11,7 +11,7 @@ include_directories(${Qt5Widgets_INCLUDE_DIRS})
 add_subdirectory(model)
 add_subdirectory(core)
 add_subdirectory(utils)
-#add_subdirectory(command)
+add_subdirectory(command)
 add_subdirectory(view)
 
 #Executable
@@ -23,12 +23,14 @@ target_link_libraries(photomakerapp
         photomakerapp_model_lib
         photomakerapp_core_lib
         photomakerapp_utils_lib
+        photomakerapp_command_lib
         photomakerapp_views_lib)
 
 set_target_properties(photomakerapp
         photomakerapp_model_lib
         photomakerapp_core_lib
         photomakerapp_utils_lib
+        photomakerapp_command_lib
         photomakerapp_views_lib
 
         PROPERTIES
