@@ -5,6 +5,7 @@
 #include <fstream>
 #include "MainViewController.h"
 #include "../command/FlipCommand.h"
+#include "../command/MirrorCommand.h"
 
 MainViewController::MainViewController(ImageWrapper *imageWrapper) : imageWrapper(imageWrapper) {
 }
@@ -44,7 +45,18 @@ void MainViewController::saveImage(std::string path) {
 
 void MainViewController::makeFlip() {
     shared_ptr<Image<>> img = imageWrapper->getImage();
-    std::shared_ptr<FlipCommand> flip = std::make_shared<FlipCommand>(img);
-    cmdHandler.registerAndExecute(flip);
-    imageWrapper->setImage(flip->getParsedImage());
+    if(img) {
+        std::shared_ptr<FlipCommand> flip = std::make_shared<FlipCommand>(img);
+        cmdHandler.registerAndExecute(flip);
+        imageWrapper->setImage(flip->getParsedImage());
+    }
+}
+
+void MainViewController::makeMirror() {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    if(img) {
+        std::shared_ptr<MirrorCommand> mirror = std::make_shared<MirrorCommand>(img);
+        cmdHandler.registerAndExecute(mirror);
+        imageWrapper->setImage(mirror->getParsedImage());
+    }
 }

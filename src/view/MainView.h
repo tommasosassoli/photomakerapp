@@ -29,6 +29,7 @@ private slots:
     void openImage();
     void saveImage();
     void makeFlip();
+    void makeMirror();
     void closeApp();
 
 private:

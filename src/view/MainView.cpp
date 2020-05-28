@@ -60,6 +60,10 @@ void MainView::makeFlip() {
     controller->makeFlip();
 }
 
+void MainView::makeMirror() {
+    controller->makeMirror();
+}
+
 void MainView::update() {
     Image<>* img = imageWrapper->getImage().get();
 

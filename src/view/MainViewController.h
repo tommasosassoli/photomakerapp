@@ -19,6 +19,8 @@ public:
 
     void makeFlip();
 
+    void makeMirror();
+
 private:
     ImageWrapper* imageWrapper;
 
