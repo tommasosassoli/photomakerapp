@@ -23,6 +23,8 @@ public:
 
     shared_ptr<Command> redo();
 
+    void resetAll();
+
 private:
     std::stack<shared_ptr<Command>> undoCommands;
 

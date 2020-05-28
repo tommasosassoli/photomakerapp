@@ -20,6 +20,7 @@ shared_ptr<Command> CommandHandler::undo() {
     if(!undoCommands.empty()) {
         shared_ptr<Command> c = undoCommands.top();
         undoCommands.pop();
+        redoCommands.push(c);
         return c;
     }
     return nullptr;
@@ -33,7 +34,7 @@ shared_ptr<Command> CommandHandler::redo() {
     if(!redoCommands.empty()){
         shared_ptr<Command> c = redoCommands.top();
         redoCommands.pop();
-        undoCommands.push(std::move(c));
+        undoCommands.push(c);
         return c;
     }
     return nullptr;
@@ -45,7 +46,8 @@ void CommandHandler::clearRedoStack() {
     }
 }
 
-CommandHandler::~CommandHandler() {
+void CommandHandler::resetAll() {
+    // clear the stacks
     while(!redoCommands.empty()) {
         redoCommands.pop();
     }
@@ -54,4 +56,6 @@ CommandHandler::~CommandHandler() {
     }
 }
 
-
+CommandHandler::~CommandHandler() {
+    resetAll();
+}
