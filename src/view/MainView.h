@@ -23,14 +23,22 @@ public:
     void resizeEvent(QResizeEvent* event);
 
 private slots:
+    // menu
+    void openImage();
+    void saveImage();
+    void closeApp();
+
+    void undoCmd();
+    void redoCmd();
+    void setUndoRedoState();
+
     void setCropSheet();
     void setColorSheet();
     void setFilterSheet();
-    void openImage();
-    void saveImage();
+
+    // crop sheet
     void makeFlip();
     void makeMirror();
-    void closeApp();
 
 private:
     MainViewWindow* ui;

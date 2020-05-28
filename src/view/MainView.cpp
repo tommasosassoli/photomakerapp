@@ -56,6 +56,23 @@ void MainView::saveImage() {
         QMessageBox::information(this, "Photo Maker APP", "No image opened");
 }
 
+void MainView::closeApp() {
+    QWidget::close();
+}
+
+void MainView::undoCmd() {
+    controller->undo();
+}
+
+void MainView::redoCmd() {
+    controller->redo();
+}
+
+void MainView::setUndoRedoState() {
+    ui->enableUndoBtn(controller->isUndoPossible());
+    ui->enableRedoBtn(controller->isRedoPossible());
+}
+
 void MainView::makeFlip() {
     controller->makeFlip();
 }
@@ -86,8 +103,4 @@ void MainView::update() {
 
 void MainView::resizeEvent(QResizeEvent *event) {
     ui->adjustImageSize();
-}
-
-void MainView::closeApp() {
-    QWidget::close();
 }

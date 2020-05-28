@@ -40,8 +40,10 @@ public:
         fileMenu->addAction(closeAct);
 
         // edit
-        QAction* undoAct = ViewUtils::createIconAction("undo", sheetMenu);
-        QAction* redoAct = ViewUtils::createIconAction("redo", sheetMenu);
+        undoAct = ViewUtils::createIconAction("undo", sheetMenu);
+        redoAct = ViewUtils::createIconAction("redo", sheetMenu);
+        undoAct->setEnabled(false);
+        redoAct->setEnabled(false);
         editMenu->addAction(undoAct);
         editMenu->addAction(redoAct);
 
@@ -63,6 +65,10 @@ public:
         QObject::connect(saveAct, SIGNAL(triggered()), parent, SLOT(saveImage()));
         QObject::connect(closeAct, SIGNAL(triggered()), parent, SLOT(closeApp()));
 
+        QObject::connect(undoAct, SIGNAL(triggered()), parent, SLOT(undoCmd()));
+        QObject::connect(redoAct, SIGNAL(triggered()), parent, SLOT(redoCmd()));
+        QObject::connect(editMenu, SIGNAL(aboutToShow()), parent, SLOT(setUndoRedoState()));
+
         QObject::connect(cropAct, SIGNAL(triggered()), parent, SLOT(setCropSheet()));
         QObject::connect(colorAct, SIGNAL(triggered()), parent, SLOT(setColorSheet()));
         QObject::connect(filterAct, SIGNAL(triggered()), parent, SLOT(setFilterSheet()));
@@ -72,8 +78,20 @@ public:
         return menuBar;
     }
 
+    QAction* getUndoAct() {
+        return undoAct;
+    }
+
+    QAction* getRedoAct() {
+        return redoAct;
+    }
+
 private:
     QMenuBar* menuBar {nullptr};
+
+    QAction* undoAct;
+
+    QAction* redoAct;
 };
 
 

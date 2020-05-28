@@ -13,12 +13,17 @@ class MainViewController {
 public:
     explicit MainViewController(ImageWrapper* imageWrapper);
 
+    // menu
     void openImage(std::string path);
-
     void saveImage(std::string path);
 
-    void makeFlip();
+    void undo();
+    void redo();
+    bool isUndoPossible();
+    bool isRedoPossible();
 
+    // crop sheet
+    void makeFlip();
     void makeMirror();
 
 private:

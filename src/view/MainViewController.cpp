@@ -21,6 +21,7 @@ void MainViewController::openImage(std::string path) {
             shared_ptr<Image<>> shrImg = std::make_shared<Image<>>(i);
 
             imageWrapper->setImage(shrImg);
+            cmdHandler.resetAll();  // reset the stacks from the old images
 
             imgFile.close();
         } catch (ImageException &e) {
@@ -42,6 +43,29 @@ void MainViewController::saveImage(std::string path) {
     } else
         throw runtime_error("Cannot save the file");
 }
+
+void MainViewController::undo() {
+    if(cmdHandler.isUndoPossible()){
+        shared_ptr<Command> cmd = cmdHandler.undo();
+        imageWrapper->setImage(cmd->getPreviousImage());
+    }
+}
+
+void MainViewController::redo() {
+    if(cmdHandler.isRedoPossible()){
+        shared_ptr<Command> cmd = cmdHandler.redo();
+        imageWrapper->setImage(cmd->getParsedImage());
+    }
+}
+
+bool MainViewController::isUndoPossible() {
+    return cmdHandler.isUndoPossible();
+}
+
+bool MainViewController::isRedoPossible() {
+    return cmdHandler.isRedoPossible();
+}
+
 
 void MainViewController::makeFlip() {
     shared_ptr<Image<>> img = imageWrapper->getImage();

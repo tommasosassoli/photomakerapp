@@ -75,6 +75,14 @@ public:
             imgLabel->setPixmap(qpixmap);
     }
 
+    void enableUndoBtn(bool v) {
+        menuBar->getUndoAct()->setEnabled(v);
+    }
+
+    void enableRedoBtn(bool v) {
+        menuBar->getRedoAct()->setEnabled(v);
+    }
+
     void setCropSheet() {
         this->setSheet(new CropSheet(superParent));
     }
