@@ -121,3 +121,15 @@ void MainViewController::adjustValue(double val) {
         imageWrapper->setImage(value->getParsedImage());
     }
 }
+
+int MainViewController::getOldHue() const {
+    return oldHue;
+}
+
+int MainViewController::getOldSaturation() const {
+    return oldSaturation;
+}
+
+int MainViewController::getOldValue() const {
+    return oldValue;
+}

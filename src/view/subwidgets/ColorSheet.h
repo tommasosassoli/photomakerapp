@@ -15,7 +15,7 @@
 
 class ColorSheet : public AbstractSheet {
 public:
-    ColorSheet(QWidget* parent) {
+    ColorSheet(QWidget* parent, int h = 0, int s = 0, int v = 0) : hue(h), saturation(s), value(v) {
         setupUi(parent);
     }
 
@@ -42,19 +42,20 @@ public:
 
         QVBoxLayout* layout = new QVBoxLayout(sheet);
         layout->addWidget(createGroup(parent, "Hue",
-                hueSlider, -180, 180));
+                hueSlider, -180, 180, hue));
         QObject::connect(sliders[0], SIGNAL(valueChanged(int)), parent, SLOT(adjustHue(int)));
 
         layout->addWidget(createGroup(parent,"Saturation",
-                satSlider, -100, 100));
+                satSlider, -100, 100, saturation));
         QObject::connect(sliders[1], SIGNAL(valueChanged(int)), parent, SLOT(adjustSaturation(int)));
 
         layout->addWidget(createGroup(parent, "Brightness",
-                briSlider, -100, 100));
+                briSlider, -100, 100, value));
         QObject::connect(sliders[2], SIGNAL(valueChanged(int)), parent, SLOT(adjustValue(int)));
 
         resetBtn = new QPushButton("Reset", sheet);
-        resetBtn->setDisabled(true);
+        if(hue == 0 && saturation == 0 && value == 0)
+            resetBtn->setDisabled(true);
 
         QObject::connect(resetBtn, SIGNAL(clicked()), parent, SLOT(setColorSheet()));
 
@@ -68,6 +69,10 @@ public:
     }
 
 private:
+    int hue {0};
+    int saturation {0};
+    int value {0};
+
     QPushButton* resetBtn;
 
     std::vector<QSlider*> sliders;

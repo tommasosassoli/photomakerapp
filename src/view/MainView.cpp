@@ -22,7 +22,7 @@ void MainView::setCropSheet() {
 }
 
 void MainView::setColorSheet() {
-    ui->setColorSheet();
+    ui->setColorSheet(controller->getOldHue(), controller->getOldSaturation(), controller->getOldValue());
 }
 
 void MainView::setFilterSheet() {

@@ -31,6 +31,10 @@ public:
     void adjustSaturation(double val);
     void adjustValue(double val);
 
+    int getOldHue() const;
+    int getOldSaturation() const;
+    int getOldValue() const;
+
 private:
     shared_ptr<Image<>> originalImage;  //FIXME remove?
     ImageWrapper* imageWrapper;

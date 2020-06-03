@@ -87,8 +87,8 @@ public:
         this->setSheet(new CropSheet(superParent));
     }
 
-    void setColorSheet() {
-        this->setSheet(new ColorSheet(superParent));
+    void setColorSheet(int h, int s, int v) {
+        this->setSheet(new ColorSheet(superParent, h, s, v));
     }
 
     void setFilterSheet() {
