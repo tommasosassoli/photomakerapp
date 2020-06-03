@@ -10,8 +10,8 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QSpinBox>
-#include <QLocale>
 #include "AbstractSheet.h"
+#include "../MainView.h"
 
 class ColorSheet : public AbstractSheet {
 public:
@@ -41,14 +41,17 @@ public:
 
 
         QVBoxLayout* layout = new QVBoxLayout(sheet);
-        layout->addWidget(createGroup("Hue", hueSlider, 0, 360, 180));
-        //layout->addWidget(createSlider(hueSlider, 0, 360, 180));
+        layout->addWidget(createGroup(parent, "Hue",
+                hueSlider, -180, 180));
+        QObject::connect(sliders[0], SIGNAL(valueChanged(int)), parent, SLOT(adjustHue(int)));
 
-        layout->addWidget(createGroup("Saturation", satSlider, -100, 100));
-        //layout->addWidget(createSlider(satSlider, -100, 100));
+        layout->addWidget(createGroup(parent,"Saturation",
+                satSlider, -100, 100));
+        QObject::connect(sliders[1], SIGNAL(valueChanged(int)), parent, SLOT(adjustSaturation(int)));
 
-        layout->addWidget(createGroup("Brightness", briSlider, -100, 100));
-        //layout->addWidget(createSlider(briSlider, -100, 100));
+        layout->addWidget(createGroup(parent, "Brightness",
+                briSlider, -100, 100));
+        QObject::connect(sliders[2], SIGNAL(valueChanged(int)), parent, SLOT(adjustValue(int)));
 
         resetBtn = new QPushButton("Reset", sheet);
         resetBtn->setDisabled(true);
@@ -66,6 +69,8 @@ public:
 
 private:
     QPushButton* resetBtn;
+
+    std::vector<QSlider*> sliders;
 
     QString baseStyle
             {"QSlider {"
@@ -85,7 +90,8 @@ private:
              "   margin: -12px -12px;"
              "}"};
 
-    QGroupBox* createGroup(QString labelName, QString &backgroundStyle, int minRange, int maxRange, int pos = 0) {
+    QGroupBox* createGroup(QWidget* parent, QString labelName, QString &backgroundStyle,
+            int minRange, int maxRange, int pos = 0) {
         QGroupBox *box = new QGroupBox(sheet);
         QVBoxLayout *vLayout = new QVBoxLayout(box);
 
@@ -112,8 +118,13 @@ private:
 
         // connect slider - spinBox
         QObject::connect(slider, &QSlider::sliderMoved, field, &QSpinBox::setValue);
+//        QObject::connect(field, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+//                slider, &QSlider::setValue);
         QObject::connect(field, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-                slider, &QSlider::setValue);
+                [slider](int val){
+            if(!slider->isSliderDown())
+                slider->setValue(val);
+        });
 
         // connect slider and spinBox - reset button
         QObject::connect(slider, &QSlider::sliderReleased, [this]() {resetBtn->setEnabled(true);});
@@ -127,7 +138,11 @@ private:
         QSlider* slider = new QSlider(Qt::Horizontal, sheet);
         slider->setRange(minRange, maxRange);
         slider->setSliderPosition(pos);
+        slider->setTracking(false);
         slider->setStyleSheet(baseStyle.arg(backgroundStyle));
+
+        sliders.push_back(slider);
+
         return slider;
     }
 };

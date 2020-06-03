@@ -26,10 +26,19 @@ public:
     void makeFlip();
     void makeMirror();
 
-private:
-    ImageWrapper* imageWrapper;
+    // color sheet
+    void adjustHue(double val);
+    void adjustSaturation(double val);
+    void adjustValue(double val);
 
+private:
+    shared_ptr<Image<>> originalImage;  //FIXME remove?
+    ImageWrapper* imageWrapper;
     CommandHandler cmdHandler;
+
+    int oldHue {0};
+    int oldSaturation {0};
+    int oldValue {0};
 };
 
 

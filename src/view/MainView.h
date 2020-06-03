@@ -40,6 +40,11 @@ private slots:
     void makeFlip();
     void makeMirror();
 
+    // color sheet
+    void adjustHue(int val);
+    void adjustSaturation(int val);
+    void adjustValue(int val);
+
 private:
     MainViewWindow* ui;
     ImageWrapper* imageWrapper;

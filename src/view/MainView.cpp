@@ -81,6 +81,18 @@ void MainView::makeMirror() {
     controller->makeMirror();
 }
 
+void MainView::adjustHue(int val) {
+    controller->adjustHue(val);
+}
+
+void MainView::adjustSaturation(int val) {
+    controller->adjustSaturation(val);
+}
+
+void MainView::adjustValue(int val) {
+    controller->adjustValue(val);
+}
+
 void MainView::update() {
     Image<>* img = imageWrapper->getImage().get();
 
