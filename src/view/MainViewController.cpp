@@ -9,6 +9,9 @@
 #include "../command/AdjustHueCommand.h"
 #include "../command/AdjustSaturationCommand.h"
 #include "../command/AdjustValueCommand.h"
+#include "../command/BlurCommand.h"
+#include "../command/SharpenCommand.h"
+#include "../command/LaplatianCommand.h"
 
 MainViewController::MainViewController(ImageWrapper *imageWrapper) : imageWrapper(imageWrapper) {
 }
@@ -23,7 +26,6 @@ void MainViewController::openImage(std::string path) {
 
             shared_ptr<Image<>> shrImg = std::make_shared<Image<>>(i);
 
-            originalImage =  shrImg;
             imageWrapper->setImage(shrImg);
             cmdHandler.resetAll();  // reset the stacks from the old images
 
@@ -101,7 +103,7 @@ void MainViewController::adjustHue(double val) {
 }
 
 void MainViewController::adjustSaturation(double val) {
-    shared_ptr<Image<>> img = imageWrapper->getImage(); //FIXME
+    shared_ptr<Image<>> img = imageWrapper->getImage();
     if(img) {
         //int delta = val - oldSaturation;
         //oldSaturation = val;
@@ -112,13 +114,40 @@ void MainViewController::adjustSaturation(double val) {
 }
 
 void MainViewController::adjustValue(double val) {
-    shared_ptr<Image<>> img = originalImage;    //FIXME
+    shared_ptr<Image<>> img = imageWrapper->getImage();
     if(img) {
         int delta = val - oldValue;
         oldValue = val;
         std::shared_ptr<AdjustValueCommand> value = std::make_shared<AdjustValueCommand>(img, delta);
         cmdHandler.registerAndExecute(value);
         imageWrapper->setImage(value->getParsedImage());
+    }
+}
+
+void MainViewController::applyBlur() {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    if(img) {
+        std::shared_ptr<BlurCommand> blur = std::make_shared<BlurCommand>(img);
+        cmdHandler.registerAndExecute(blur);
+        imageWrapper->setImage(blur->getParsedImage());
+    }
+}
+
+void MainViewController::applySharpen() {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    if(img) {
+        std::shared_ptr<SharpenCommand> sharp = std::make_shared<SharpenCommand>(img);
+        cmdHandler.registerAndExecute(sharp);
+        imageWrapper->setImage(sharp->getParsedImage());
+    }
+}
+
+void MainViewController::applyLaplatian() {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    if(img) {
+        std::shared_ptr<LaplatianCommand> lap = std::make_shared<LaplatianCommand>(img);
+        cmdHandler.registerAndExecute(lap);
+        imageWrapper->setImage(lap->getParsedImage());
     }
 }
 

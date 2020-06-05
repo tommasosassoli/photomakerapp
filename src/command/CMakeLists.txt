@@ -7,6 +7,10 @@ set(SOURCE_FILES
         MirrorCommand.h
         AdjustHueCommand.h
         AdjustSaturationCommand.h
-        AdjustValueCommand.h)
+        AdjustValueCommand.h
+        BlurCommand.h
+        SharpenCommand.h
+        LaplatianCommand.h
+        )
 
 add_library(photomakerapp_command_lib ${SOURCE_FILES})

@@ -45,6 +45,11 @@ private slots:
     void adjustSaturation(int val);
     void adjustValue(int val);
 
+    // filter sheet
+    void applyBlur();
+    void applySharpen();
+    void applyLaplatian();
+
 private:
     MainViewWindow* ui;
     ImageWrapper* imageWrapper;

@@ -93,6 +93,18 @@ void MainView::adjustValue(int val) {
     controller->adjustValue(val);
 }
 
+void MainView::applyBlur() {
+    controller->applyBlur();
+}
+
+void MainView::applySharpen() {
+    controller->applySharpen();
+}
+
+void MainView::applyLaplatian() {
+    controller->applyLaplatian();
+}
+
 void MainView::update() {
     Image<>* img = imageWrapper->getImage().get();
 

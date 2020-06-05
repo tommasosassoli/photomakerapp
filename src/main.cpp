@@ -9,6 +9,8 @@ int main(int argc, char *argv[]) {
     i.setBuffer(new RGBPixel[1]);
     i.getBuffer()->setR(20);
     i.getBuffer()->getR();
+    KernelMatrix k(nullptr, 3);
+    k.getDim();
 
     ImageWrapper imageWrapper;
     MainViewController controller(&imageWrapper);
