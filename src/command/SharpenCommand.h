@@ -25,7 +25,7 @@ public:
     }
 
     std::string toString() override {
-        return "Sharpen";
+        return "Laplatian";
     }
 };
 

@@ -104,12 +104,24 @@ public:
             imgLabel->setPixmap(qpixmap);
     }
 
-    void enableUndoBtn(bool v) {
-        menuBar->getUndoAct()->setEnabled(v);
+    void enableUndoBtn(bool v, QString txt = "Undo") {
+        QAction* act = menuBar->getUndoAct();
+        act->setEnabled(v);
+        act->setText(txt);
+        if(txt != "Undo")
+            act->setStatusTip("Undo the " + txt + " command");
+        else
+            act->setStatusTip("Undo the last command");
     }
 
-    void enableRedoBtn(bool v) {
-        menuBar->getRedoAct()->setEnabled(v);
+    void enableRedoBtn(bool v, QString txt = "Redo") {
+        QAction* act = menuBar->getRedoAct();
+        act->setEnabled(v);
+        act->setText(txt);
+        if(txt != "Redo")
+            act->setStatusTip("Redo the " + txt + " command");
+        else
+            act->setStatusTip("Redo the last command");
     }
 
     void setCropSheet() {

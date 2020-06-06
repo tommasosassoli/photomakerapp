@@ -20,7 +20,9 @@ public:
     void undo();
     void redo();
     bool isUndoPossible();
+    std::string getUndoTopName() const;
     bool isRedoPossible();
+    std::string getRedoTopName() const;
 
     // crop sheet
     void makeFlip();

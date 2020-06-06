@@ -23,6 +23,10 @@ public:
 
     shared_ptr<Command> redo();
 
+    shared_ptr<Command> getUndoTop() const;
+
+    shared_ptr<Command> getRedoTop() const;
+
     void resetAll();
 
 private:

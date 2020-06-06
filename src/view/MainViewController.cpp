@@ -68,10 +68,17 @@ bool MainViewController::isUndoPossible() {
     return cmdHandler.isUndoPossible();
 }
 
+std::string MainViewController::getUndoTopName() const {
+    return cmdHandler.getUndoTop()->toString();
+}
+
 bool MainViewController::isRedoPossible() {
     return cmdHandler.isRedoPossible();
 }
 
+std::string MainViewController::getRedoTopName() const {
+    return cmdHandler.getRedoTop()->toString();
+}
 
 void MainViewController::makeFlip() {
     shared_ptr<Image<>> img = imageWrapper->getImage();

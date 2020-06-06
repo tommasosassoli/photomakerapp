@@ -71,8 +71,17 @@ void MainView::redoCmd() {
 }
 
 void MainView::setUndoRedoState() {
-    ui->enableUndoBtn(controller->isUndoPossible());
-    ui->enableRedoBtn(controller->isRedoPossible());
+    //undo
+    if(controller->isUndoPossible())
+        ui->enableUndoBtn(true, controller->getUndoTopName().c_str());
+    else
+        ui->enableUndoBtn(false);
+
+    //redo
+    if(controller->isRedoPossible())
+        ui->enableRedoBtn(true, controller->getRedoTopName().c_str());
+    else
+        ui->enableRedoBtn(false);
 }
 
 void MainView::makeFlip() {

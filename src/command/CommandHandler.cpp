@@ -59,3 +59,11 @@ void CommandHandler::resetAll() {
 CommandHandler::~CommandHandler() {
     resetAll();
 }
+
+shared_ptr<Command> CommandHandler::getUndoTop() const {
+    return undoCommands.top();
+}
+
+shared_ptr<Command> CommandHandler::getRedoTop() const {
+    return redoCommands.top();
+}
