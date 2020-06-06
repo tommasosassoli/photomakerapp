@@ -34,6 +34,11 @@ public:
         QAction* openAct = ViewUtils::createIconAction("open", sheetMenu);
         QAction* saveAct = ViewUtils::createIconAction("save", sheetMenu);
         QAction* closeAct = new QAction("Close", fileMenu);
+
+        openAct->setStatusTip("Open an image");
+        saveAct->setStatusTip("Save an image");
+        closeAct->setStatusTip("Close the app");
+
         fileMenu->addAction(openAct);
         fileMenu->addAction(saveAct);
         fileMenu->addSeparator();
@@ -44,6 +49,10 @@ public:
         redoAct = ViewUtils::createIconAction("redo", sheetMenu);
         undoAct->setEnabled(false);
         redoAct->setEnabled(false);
+
+        undoAct->setStatusTip("Undo the last action");
+        redoAct->setStatusTip("Redo the last action");
+
         editMenu->addAction(undoAct);
         editMenu->addAction(redoAct);
 
@@ -52,6 +61,11 @@ public:
         QAction* cropAct = ViewUtils::createIconAction("crop", sheetMenu);
         QAction* colorAct = ViewUtils::createIconAction("color", sheetMenu);
         QAction* filterAct = ViewUtils::createIconAction("filters", sheetMenu);
+
+        cropAct->setStatusTip("Show the crop tab");
+        colorAct->setStatusTip("Show the color tab");
+        filterAct->setStatusTip("Show the filter tab");
+
         sheetMenu->addAction(cropAct);
         sheetMenu->addAction(colorAct);
         sheetMenu->addAction(filterAct);

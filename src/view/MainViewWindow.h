@@ -9,6 +9,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QStatusBar>
 #include "subwidgets/AbstractSheet.h"
 #include "subwidgets/CropSheet.h"
 #include "subwidgets/ColorSheet.h"
@@ -49,6 +50,15 @@ public:
         mainWidget->setLayout(hBox);
         view->setCentralWidget(mainWidget);
 
+        //status bar
+        statusBar = new QStatusBar(superParent);
+        statusBar->showMessage("Open an image to start");
+
+        pathToImg = new QLabel(statusBar);
+        statusBar->addPermanentWidget(pathToImg);
+
+        view->setStatusBar(statusBar);
+
         QMetaObject::connectSlotsByName(view);
     }
 
@@ -58,8 +68,27 @@ public:
     }
 
     void setLoadingState() {
+        statusBar->showMessage("Load in progress");
+        statusBar->repaint();
         imgLabel->setText("Just a moment...");
         imgLabel->repaint();
+    }
+
+    void setNormalStatus() {
+        statusBar->clearMessage();
+    }
+
+    void setApplyingChangesState() {
+        statusBar->showMessage("Applying changes");
+        statusBar->repaint();
+    }
+
+    void setSavedState() {
+        statusBar->showMessage("The image has been saved");
+    }
+
+    void setPathToImage(QString path) {
+        pathToImg->setText("Path: " + path);
     }
 
     void setImage(QImage& img) {
@@ -111,6 +140,10 @@ private:
     //image
     QLabel* imgLabel {nullptr};
     QPixmap qpixmap;
+
+    //status bar
+    QStatusBar* statusBar {nullptr};
+    QLabel* pathToImg {nullptr};
 
 
     void setSheet(AbstractSheet* sheet) {

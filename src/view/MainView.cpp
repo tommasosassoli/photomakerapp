@@ -35,6 +35,7 @@ void MainView::openImage() {
         try {
             ui->setLoadingState();
             controller->openImage(url.path().toStdString());
+            ui->setPathToImage(url.path());
         } catch (runtime_error &e) {
             QMessageBox::information(this, "Photo Maker APP", e.what());
         }
@@ -48,6 +49,7 @@ void MainView::saveImage() {
         if (!url.isEmpty()) {
             try {
                 controller->saveImage(url.path().toStdString());
+                ui->setSavedState();
             } catch (runtime_error &e) {
                 QMessageBox::information(this, "Photo Maker APP", e.what());
             }
@@ -74,34 +76,42 @@ void MainView::setUndoRedoState() {
 }
 
 void MainView::makeFlip() {
+    ui->setApplyingChangesState();
     controller->makeFlip();
 }
 
 void MainView::makeMirror() {
+    ui->setApplyingChangesState();
     controller->makeMirror();
 }
 
 void MainView::adjustHue(int val) {
+    ui->setApplyingChangesState();
     controller->adjustHue(val);
 }
 
 void MainView::adjustSaturation(int val) {
+    ui->setApplyingChangesState();
     controller->adjustSaturation(val);
 }
 
 void MainView::adjustValue(int val) {
+    ui->setApplyingChangesState();
     controller->adjustValue(val);
 }
 
 void MainView::applyBlur() {
+    ui->setApplyingChangesState();
     controller->applyBlur();
 }
 
 void MainView::applySharpen() {
+    ui->setApplyingChangesState();
     controller->applySharpen();
 }
 
 void MainView::applyLaplatian() {
+    ui->setApplyingChangesState();
     controller->applyLaplatian();
 }
 
@@ -121,7 +131,10 @@ void MainView::update() {
     }
 
     QImage qImg(arr, width, height, QImage::Format_RGB888);  //Format_RGB888: RGB 24 bits per pixel
+
     ui->setImage(qImg);
+    ui->setNormalStatus();
+
     delete arr;
 }
 
