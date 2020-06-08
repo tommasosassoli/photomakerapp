@@ -15,6 +15,7 @@
 #include "subwidgets/ColorSheet.h"
 #include "subwidgets/FilterSheet.h"
 #include "subwidgets/TopMenuBar.h"
+#include "subwidgets/RenderArea.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -41,10 +42,8 @@ public:
         hBox->insertWidget(1, effectSheet->getSheet());
 
         //image
-        imgLabel = new QLabel(mainWidget);
-        imgLabel->setText("Open an image to start");
-        imgLabel->setAlignment(Qt::AlignCenter);
-        hBox->insertWidget(0, imgLabel);
+        renderArea = new RenderArea(superParent);
+        hBox->insertWidget(0, renderArea);
 
         //setting layout
         mainWidget->setLayout(hBox);
@@ -70,8 +69,6 @@ public:
     void setLoadingState() {
         statusBar->showMessage("Load in progress");
         statusBar->repaint();
-        imgLabel->setText("Just a moment...");
-        imgLabel->repaint();
     }
 
     void setNormalStatus() {
@@ -92,16 +89,7 @@ public:
     }
 
     void setImage(QImage& img) {
-        qpixmap = QPixmap::fromImage(img);
-        adjustImageSize();
-    }
-
-    void adjustImageSize() {
-        if(qpixmap.height() > imgLabel->height() || qpixmap.width() > imgLabel->width())
-            imgLabel->setPixmap(qpixmap.scaled(imgLabel->width(), imgLabel->height(),
-                    Qt::KeepAspectRatio));
-        else
-            imgLabel->setPixmap(qpixmap);
+        renderArea->setImage(img);
     }
 
     void enableUndoBtn(bool v, QString txt = "Undo") {
@@ -122,6 +110,12 @@ public:
             act->setStatusTip("Redo the " + txt + " command");
         else
             act->setStatusTip("Redo the last command");
+    }
+
+    void setSelectionActive(bool active) {
+        renderArea->setSelectionActive(active);
+        if(!active)
+            menuBar->deactivateSelection();
     }
 
     void setCropSheet() {
@@ -150,8 +144,7 @@ private:
     AbstractSheet* effectSheet {nullptr};
 
     //image
-    QLabel* imgLabel {nullptr};
-    QPixmap qpixmap;
+    RenderArea* renderArea {nullptr};
 
     //status bar
     QStatusBar* statusBar {nullptr};

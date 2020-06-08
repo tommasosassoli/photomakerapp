@@ -20,7 +20,8 @@ public:
 
     void update() override;
 
-    void resizeEvent(QResizeEvent* event);
+protected:
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
     // menu
@@ -31,6 +32,8 @@ private slots:
     void undoCmd();
     void redoCmd();
     void setUndoRedoState();
+
+    void enableSelectionTool(bool enable);
 
     void setCropSheet();
     void setColorSheet();

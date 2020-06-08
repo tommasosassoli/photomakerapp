@@ -36,6 +36,7 @@ void MainView::openImage() {
             ui->setLoadingState();
             controller->openImage(url.path().toStdString());
             ui->setPathToImage(url.path());
+            ui->setSelectionActive(false);
         } catch (runtime_error &e) {
             QMessageBox::information(this, "Photo Maker APP", e.what());
         }
@@ -50,6 +51,7 @@ void MainView::saveImage() {
             try {
                 controller->saveImage(url.path().toStdString());
                 ui->setSavedState();
+                ui->setSelectionActive(false);
             } catch (runtime_error &e) {
                 QMessageBox::information(this, "Photo Maker APP", e.what());
             }
@@ -82,6 +84,10 @@ void MainView::setUndoRedoState() {
         ui->enableRedoBtn(true, controller->getRedoTopName().c_str());
     else
         ui->enableRedoBtn(false);
+}
+
+void MainView::enableSelectionTool(bool enable) {
+    ui->setSelectionActive(enable);
 }
 
 void MainView::makeFlip() {
@@ -148,5 +154,5 @@ void MainView::update() {
 }
 
 void MainView::resizeEvent(QResizeEvent *event) {
-    ui->adjustImageSize();
+    ui->setSelectionActive(false);
 }

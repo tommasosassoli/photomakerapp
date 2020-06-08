@@ -28,11 +28,12 @@ public:
 
         QMenu* fileMenu = new QMenu("File", menuBar);
         QMenu* editMenu = new QMenu("Edit", menuBar);
+        QMenu* selectionMenu = new QMenu("Selection", menuBar);
         QMenu* sheetMenu = new QMenu("View", menuBar);
 
         // file
-        QAction* openAct = ViewUtils::createIconAction("open", sheetMenu);
-        QAction* saveAct = ViewUtils::createIconAction("save", sheetMenu);
+        QAction* openAct = ViewUtils::createIconAction("open", fileMenu);
+        QAction* saveAct = ViewUtils::createIconAction("save", fileMenu);
         QAction* closeAct = new QAction("Close", fileMenu);
 
         openAct->setStatusTip("Open an image");
@@ -45,8 +46,8 @@ public:
         fileMenu->addAction(closeAct);
 
         // edit
-        undoAct = ViewUtils::createIconAction("undo", sheetMenu);
-        redoAct = ViewUtils::createIconAction("redo", sheetMenu);
+        undoAct = ViewUtils::createIconAction("undo", editMenu);
+        redoAct = ViewUtils::createIconAction("redo", editMenu);
         undoAct->setEnabled(false);
         redoAct->setEnabled(false);
 
@@ -55,6 +56,14 @@ public:
 
         editMenu->addAction(undoAct);
         editMenu->addAction(redoAct);
+
+        // selection
+        selectionAct = ViewUtils::createIconAction("Select", selectionMenu);
+        selectionAct->setCheckable(true);
+
+        selectionAct->setStatusTip("Enable the selection tool");
+
+        selectionMenu->addAction(selectionAct);
 
         // sheet
         //QAction* cropAct = new QAction("Crop", sheetMenu);
@@ -72,6 +81,7 @@ public:
 
         menuBar->addMenu(fileMenu);
         menuBar->addMenu(editMenu);
+        menuBar->addMenu(selectionMenu);
         menuBar->addMenu(sheetMenu);
 
         // events
@@ -82,6 +92,8 @@ public:
         QObject::connect(undoAct, SIGNAL(triggered()), parent, SLOT(undoCmd()));
         QObject::connect(redoAct, SIGNAL(triggered()), parent, SLOT(redoCmd()));
         QObject::connect(editMenu, SIGNAL(aboutToShow()), parent, SLOT(setUndoRedoState()));
+
+        QObject::connect(selectionAct, SIGNAL(toggled(bool)), parent, SLOT(enableSelectionTool(bool)));
 
         QObject::connect(cropAct, SIGNAL(triggered()), parent, SLOT(setCropSheet()));
         QObject::connect(colorAct, SIGNAL(triggered()), parent, SLOT(setColorSheet()));
@@ -100,12 +112,18 @@ public:
         return redoAct;
     }
 
+    void deactivateSelection() {
+        selectionAct->setChecked(false);
+    }
+
 private:
     QMenuBar* menuBar {nullptr};
 
     QAction* undoAct;
 
     QAction* redoAct;
+
+    QAction* selectionAct;
 };
 
 
