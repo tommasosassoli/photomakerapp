@@ -8,7 +8,8 @@ set(SOURCE_FILES
         mainTestPhotoMakerApp.cpp
         TestImageProcessor.cpp
         TestExecutionTime.cpp
-        TestPixelConversion.cpp)
+        TestPixelConversion.cpp
+        TestUndoRedo.cpp)
 
 add_executable(runTestPhotoMakerApp ${SOURCE_FILES})
 target_link_libraries(runTestPhotoMakerApp
