@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.15)
 set(SOURCE_FILES
         Command.h
         CommandHandler.h CommandHandler.cpp
+        CropCommand.h
         FlipCommand.h
         MirrorCommand.h
         AdjustHueCommand.h

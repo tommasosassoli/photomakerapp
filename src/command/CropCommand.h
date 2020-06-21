@@ -11,12 +11,16 @@
 
 class CropCommand : public Command {
 public:
-    CropCommand(Image<>* img, int x1, int y1, int x2, int y2) : oldimg(img), x1(x1), y1(y1), x2(x2), y2(y2) {
+    CropCommand(shared_ptr<Image<>> img, int x1, int y1, int x2, int y2) : Command(img), x1(x1), y1(y1), x2(x2), y2(y2){
     }
 
     void execute() {
-        Image<> i = ImageProcessor::crop(*oldimg, x1, y1, x2, y2);
-        newimg = &i;
+        try {
+            Image<> tmp = ImageProcessor::crop(*(this->previousImg.get()), y1, x1, y2, x2);
+            this->parsedImg = std::make_shared<Image<>>(tmp);
+        } catch (ImageException& e) {
+            this->parsedImg = this->previousImg;
+        }
     }
 
     std::string toString() {
@@ -24,8 +28,6 @@ public:
     }
 
 private:
-    Image<>* newimg {nullptr};
-    Image<>* oldimg {nullptr};
     int x1, y1, x2, y2;
 };
 
