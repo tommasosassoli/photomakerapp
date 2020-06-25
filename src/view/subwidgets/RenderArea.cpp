@@ -4,6 +4,7 @@
 
 #include <QtGui/QPainter>
 #include <QMouseEvent>
+#include <QtWidgets/QToolTip>
 #include "RenderArea.h"
 
 RenderArea::RenderArea(QWidget* parent) : QWidget(parent) {
@@ -25,11 +26,13 @@ void RenderArea::paintEvent(QPaintEvent* event) {
     int h = pixmap.height();
 
     // print pixmap
-    if(h > this->height() || w > this->width())
-        painter.drawPixmap(p0, pixmap.scaled(this->width(), this->height(),
-                Qt::KeepAspectRatio));
-    else
+    if(h > this->height() || w > this->width()) {
+        pixmapScaled = pixmap.scaled(this->width(), this->height(),Qt::KeepAspectRatio);
+        painter.drawPixmap(p0, pixmapScaled);
+    } else {
         painter.drawPixmap(p0, pixmap);
+        pixmapScaled = QPixmap();
+    }
 }
 
 void RenderArea::setSelectionActive(bool active) {
@@ -62,15 +65,26 @@ void RenderArea::mousePressEvent(QMouseEvent *event) {
 }
 
 void RenderArea::mouseMoveEvent(QMouseEvent *event) {
-    if(selectionActive && mousePress){
-        rubberBand->setGeometry(QRect(origSelection, event->pos()).normalized());
-    }
+    if(selectionActive) {
+        this->setCursor(QCursor(Qt::CrossCursor));
+        if (mousePress) {
+            rubberBand->setGeometry(QRect(origSelection, event->pos()).normalized());
+            QToolTip::showText(event->globalPos(), QString("%1, %2")
+                    .arg(rubberBand->size().width())
+                    .arg(rubberBand->size().height()), this);
+        }
+    } else
+        this->setCursor(QCursor(Qt::ArrowCursor));
 }
 
 void RenderArea::mouseReleaseEvent(QMouseEvent *event) {
     if(selectionActive) {
         QRect rubberGeometry = rubberBand->geometry();
-        QRect imageGeometry = QRect(p0, pixmap.size());
+        QRect imageGeometry;
+        if(pixmapScaled.isNull())
+            imageGeometry = QRect(p0, pixmap.size());
+        else
+            imageGeometry = QRect(p0, pixmapScaled.size());
 
         QRect intersect = imageGeometry.intersected(rubberGeometry);
         rubberBand->setGeometry(intersect);
@@ -79,19 +93,30 @@ void RenderArea::mouseReleaseEvent(QMouseEvent *event) {
     }
 }
 
-QRect RenderArea::getSelectionAreaPosition() {
-    if(selectionActive){
-        QRect imageGeometry = QRect(p0, pixmap.size());
-        return QRect(imageGeometry.x() - rubberBand->x(),
-                imageGeometry.y() - rubberBand->y(),
-                imageGeometry.size().width() - pixmap.size().width(),
-                imageGeometry.size().height() - pixmap.size().height());
+QRect RenderArea::getSelectedArea() {
+    if(selectionActive) {
+        QRect rubberGeometry = rubberBand->geometry();
+        QPoint a, b;
+
+        a.setX(rubberGeometry.x() - p0.x());
+        a.setY(rubberGeometry.y() - p0.y());
+        b.setX(a.x() + rubberGeometry.width() - 1);
+        b.setY(a.y() + rubberGeometry.height() - 1);
+
+        if(!pixmapScaled.isNull()) {
+            double sx = pixmapScaled.width();
+            double sy = pixmapScaled.height();
+            sx = pixmap.width() / sx;
+            sy = pixmap.height() / sy;
+
+            a.setX(int(a.x() * sx));
+            a.setY(int(a.y() * sy));
+            b.setX(int(b.x() * sx));
+            b.setY(int(b.y() * sy));
+        }
+
+        QRect result = QRect(a,b);
+        return (result.width() > 2 && result.height() > 2)? result.normalized() : QRect();
     }
     return QRect();
-}
-
-void RenderArea::repaintSelectionArea(QRect rect) {
-    if(selectionActive){
-        rubberBand->setGeometry(rect);
-    }
 }

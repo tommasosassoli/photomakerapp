@@ -118,6 +118,10 @@ public:
             menuBar->deactivateSelection();
     }
 
+    QRect getSelectedArea() {
+        return renderArea->getSelectedArea();
+    }
+
     void setCropSheet() {
         this->setSheet(new CropSheet(superParent));
     }

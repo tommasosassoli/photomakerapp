@@ -21,16 +21,16 @@ public:
 
         QPushButton* blurButton = new QPushButton("Blur", sheet);
         QPushButton* sharpenButton = new QPushButton("Sharpen", sheet);
-        QPushButton* laplatianButton = new QPushButton("Laplatian", sheet);
+        QPushButton* laplacianButton = new QPushButton("Edge detection", sheet);
 
         QObject::connect(blurButton, SIGNAL(clicked()), parent, SLOT(applyBlur()));
         QObject::connect(sharpenButton, SIGNAL(clicked()), parent, SLOT(applySharpen()));
-        QObject::connect(laplatianButton, SIGNAL(clicked()), parent, SLOT(applyLaplatian()));
+        QObject::connect(laplacianButton, SIGNAL(clicked()), parent, SLOT(applyLaplatian()));
 
         QVBoxLayout* layout = new QVBoxLayout(sheet);
         layout->addWidget(blurButton);
         layout->addWidget(sharpenButton);
-        layout->addWidget(laplatianButton);
+        layout->addWidget(laplacianButton);
 
         layout->setAlignment(Qt::AlignCenter);
 

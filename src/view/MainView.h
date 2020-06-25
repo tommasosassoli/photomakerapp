@@ -40,6 +40,7 @@ private slots:
     void setFilterSheet();
 
     // crop sheet
+    void makeCrop();
     void makeFlip();
     void makeMirror();
 
@@ -51,7 +52,7 @@ private slots:
     // filter sheet
     void applyBlur();
     void applySharpen();
-    void applyLaplatian();
+    void applyLaplacian();
 
 private:
     MainViewWindow* ui;

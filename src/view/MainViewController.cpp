@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include "MainViewController.h"
+#include "../command/CropCommand.h"
 #include "../command/FlipCommand.h"
 #include "../command/MirrorCommand.h"
 #include "../command/AdjustHueCommand.h"
@@ -11,7 +12,7 @@
 #include "../command/AdjustValueCommand.h"
 #include "../command/BlurCommand.h"
 #include "../command/SharpenCommand.h"
-#include "../command/LaplatianCommand.h"
+#include "../command/LaplacianCommand.h"
 
 MainViewController::MainViewController(ImageWrapper *imageWrapper) : imageWrapper(imageWrapper) {
 }
@@ -78,6 +79,15 @@ bool MainViewController::isRedoPossible() {
 
 std::string MainViewController::getRedoTopName() const {
     return cmdHandler.getRedoTop()->toString();
+}
+
+void MainViewController::makeCrop(int x1, int y1, int x2, int y2) {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    if(img) {
+        std::shared_ptr<CropCommand> crop = std::make_shared<CropCommand>(img, x1, y1, x2, y2);
+        cmdHandler.registerAndExecute(crop);
+        imageWrapper->setImage(crop->getParsedImage());
+    }
 }
 
 void MainViewController::makeFlip() {
@@ -149,10 +159,10 @@ void MainViewController::applySharpen() {
     }
 }
 
-void MainViewController::applyLaplatian() {
+void MainViewController::applyLaplacian() {
     shared_ptr<Image<>> img = imageWrapper->getImage();
     if(img) {
-        std::shared_ptr<LaplatianCommand> lap = std::make_shared<LaplatianCommand>(img);
+        std::shared_ptr<LaplacianCommand> lap = std::make_shared<LaplacianCommand>(img);
         cmdHandler.registerAndExecute(lap);
         imageWrapper->setImage(lap->getParsedImage());
     }

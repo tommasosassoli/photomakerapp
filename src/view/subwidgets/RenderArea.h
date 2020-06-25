@@ -21,6 +21,8 @@ public:
 
     void setSelectionActive(bool active);
 
+    QRect getSelectedArea();
+
     QSize minimumSizeHint() const override {
         return QSize(700, 400);
     }
@@ -39,6 +41,8 @@ private:
     QPixmap pixmap;
     QPoint p0;
 
+    QPixmap pixmapScaled;
+
     // selection area
     bool selectionActive {false};
     QRubberBand* rubberBand;
@@ -46,10 +50,6 @@ private:
     bool mousePress {false};
 
     QPoint calcCenter() const;
-
-    QRect getSelectionAreaPosition();
-
-    void repaintSelectionArea(QRect rect);
 };
 
 

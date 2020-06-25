@@ -90,6 +90,15 @@ void MainView::enableSelectionTool(bool enable) {
     ui->setSelectionActive(enable);
 }
 
+void MainView::makeCrop() {
+    QRect rect = ui->getSelectedArea();
+    if(!rect.isEmpty()) {
+        ui->setApplyingChangesState();
+        controller->makeCrop(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    }
+    ui->setSelectionActive(false);
+}
+
 void MainView::makeFlip() {
     ui->setApplyingChangesState();
     controller->makeFlip();
@@ -125,9 +134,9 @@ void MainView::applySharpen() {
     controller->applySharpen();
 }
 
-void MainView::applyLaplatian() {
+void MainView::applyLaplacian() {
     ui->setApplyingChangesState();
-    controller->applyLaplatian();
+    controller->applyLaplacian();
 }
 
 void MainView::update() {
@@ -139,18 +148,19 @@ void MainView::update() {
 
     // RGB image converted in unsigned char for compatibility with QImage (Qt5)
     uchar *arr = new uchar[height * width * 3];
-    for(int i = 0, j = 0; i < height * width; i++, j += 3) {
-        arr[j] = buffer[i].getR();
-        arr[j + 1] = buffer[i].getG();
-        arr[j + 2] = buffer[i].getB();
+    for(int i = 0; i < height * width; i++) {
+        arr[i*3] = buffer[i].getR();
+        arr[i*3 + 1] = buffer[i].getG();
+        arr[i*3 + 2] = buffer[i].getB();
     }
 
-    QImage qImg(arr, width, height, QImage::Format_RGB888);  //Format_RGB888: RGB 24 bits per pixel
+    //Format_RGB888: RGB 24 bits per pixel
+    QImage qImg(arr, width, height, width*3,QImage::Format_RGB888);
 
     ui->setImage(qImg);
     ui->setNormalStatus();
 
-    delete arr;
+    delete[] arr;
 }
 
 void MainView::resizeEvent(QResizeEvent *event) {

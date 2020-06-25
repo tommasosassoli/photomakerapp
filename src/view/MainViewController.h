@@ -25,6 +25,7 @@ public:
     std::string getRedoTopName() const;
 
     // crop sheet
+    void makeCrop(int x1, int y1, int x2, int y2);
     void makeFlip();
     void makeMirror();
 
@@ -36,7 +37,7 @@ public:
     // filter sheet
     void applyBlur();
     void applySharpen();
-    void applyLaplatian();
+    void applyLaplacian();
 
     // other method
     int getOldHue() const;

@@ -2,15 +2,15 @@
 // Created by tommaso on 27/05/20.
 //
 
-#ifndef PHOTOMAKERAPP_LAPLATIANCOMMAND_H
-#define PHOTOMAKERAPP_LAPLATIANCOMMAND_H
+#ifndef PHOTOMAKERAPP_LAPLACIANCOMMAND_H
+#define PHOTOMAKERAPP_LAPLACIANCOMMAND_H
 
 
 #include "Command.h"
 
-class LaplatianCommand : public Command {
+class LaplacianCommand : public Command {
 public:
-    LaplatianCommand(shared_ptr<Image<>> img) : Command(img){
+    LaplacianCommand(shared_ptr<Image<>> img) : Command(img){
     }
 
     void execute() override {
@@ -25,9 +25,9 @@ public:
     }
 
     std::string toString() override {
-        return "Sharpen";
+        return "Edge detection";
     }
 };
 
 
-#endif //PHOTOMAKERAPP_LAPLATIANCOMMAND_H
+#endif //PHOTOMAKERAPP_LAPLACIANCOMMAND_H

@@ -33,6 +33,7 @@ public:
         sheet->setLayout(layout);
         sheet->setMaximumWidth(200);
 
+        QObject::connect(cropButton, SIGNAL(clicked()), parent, SLOT(makeCrop()));
         QObject::connect(flipButton, SIGNAL(clicked()), parent, SLOT(makeFlip()));
         QObject::connect(mirrorButton, SIGNAL(clicked()), parent, SLOT(makeMirror()));
     }
