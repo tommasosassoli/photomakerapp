@@ -38,6 +38,7 @@ public:
     void applyBlur();
     void applySharpen();
     void applyLaplacian();
+    void applyLaplacian(int x1, int y1, int x2, int y2);
 
     // other method
     int getOldHue() const;

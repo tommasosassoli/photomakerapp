@@ -6,7 +6,7 @@
 #include "gtest/gtest.h"
 #include "../src/core/ImageProcessor.cpp"
 
-class TestImageProcessor : public ::testing::Test {
+class TestImageProcessor : public ::testing::Test {//TODO test convolution with submatrix
 protected:
     virtual void SetUp() {
         kernelMatrix = new KernelMatrix(kernelArray, 3);

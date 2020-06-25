@@ -10,7 +10,8 @@
 
 class LaplacianCommand : public Command {
 public:
-    LaplacianCommand(shared_ptr<Image<>> img) : Command(img){
+    LaplacianCommand(shared_ptr<Image<>> img, int x1 = 0, int y1 = 0, int x2 = 0, int y2 = 0) : Command(img), x1(x1),
+    y1(y1), x2(x2), y2(y2) {
     }
 
     void execute() override {
@@ -20,13 +21,19 @@ public:
 
         KernelMatrix kernel(arr, 3);
 
-        Image<> tmp = ImageProcessor::computeConvolution(*(this->previousImg.get()), kernel);
+        Image<> tmp = ImageProcessor::computeConvolution(*(this->previousImg.get()), kernel, x1, y1, x2, y2);
         this->parsedImg = std::make_shared<Image<>>(tmp);
     }
 
     std::string toString() override {
         return "Edge detection";
     }
+
+private:
+    int x1;
+    int y1;
+    int x2;
+    int y2;
 };
 
 

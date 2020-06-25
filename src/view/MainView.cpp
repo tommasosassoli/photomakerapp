@@ -135,8 +135,12 @@ void MainView::applySharpen() {
 }
 
 void MainView::applyLaplacian() {
+    QRect rect = ui->getSelectedArea();
     ui->setApplyingChangesState();
-    controller->applyLaplacian();
+    if(rect.isEmpty())
+        controller->applyLaplacian();
+    else
+        controller->applyLaplacian(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
 }
 
 void MainView::update() {

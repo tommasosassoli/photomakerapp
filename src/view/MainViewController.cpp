@@ -168,6 +168,15 @@ void MainViewController::applyLaplacian() {
     }
 }
 
+void MainViewController::applyLaplacian(int x1, int y1, int x2, int y2) {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    if(img) {
+        std::shared_ptr<LaplacianCommand> lap = std::make_shared<LaplacianCommand>(img, x1, y1, x2, y2);
+        cmdHandler.registerAndExecute(lap);
+        imageWrapper->setImage(lap->getParsedImage());
+    }
+}
+
 int MainViewController::getOldHue() const {
     return oldHue;
 }
