@@ -11,13 +11,18 @@
 
 // OTHER METHODS
 
-inline int reflect(const int m, const int x){ //TODO togli
+inline int reflect(const int m, const int x){
     // method to prevent index-out-of-range in a buffer
     if(x < 0)   return -x-1;
     if(x >= m)  return 2*m-x-1;
 }
 
 namespace ImageProcessor {
+    template<typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
+    Image<T> crop(const Image<T> &img, int x1, int y1, int x2, int y2);
+
+    template<typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
+    Image<T> overlap(const Image<T> &img, const Image<T> &topImg, int x, int y);
 
 // CONVOLUTION
 
@@ -40,7 +45,7 @@ namespace ImageProcessor {
             for (int c = 0; c < width; c++) {
                 int pr = 0, pg = 0, pb = 0;
                 for (int i = 0; i < kernelDim; i++) {
-                    for (int j = 0; j < kernelDim; j++) {//FIXME pensa al valore nullo
+                    for (int j = 0; j < kernelDim; j++) {
                         pixelVal = imgBuff[reflect(height, r + i - dev) * width + reflect(width, c + j - dev)];
                         kernelVal = kernelBuf[(kernelDim - i - 1) * kernelDim + (kernelDim - j - 1)];
 
@@ -57,6 +62,13 @@ namespace ImageProcessor {
 
     inline Image<HSVPixel> computeConvolution(const Image<HSVPixel> &img, const KernelMatrix &kernel) {
         return computeConvolution(img.convert<RGBPixel>(), kernel).convert<HSVPixel>();
+    }
+
+    inline Image<RGBPixel> computeConvolution(const Image<RGBPixel> &img, const KernelMatrix &kernel,
+            int x1, int y1, int x2, int y2) {
+        Image<> cropImg = ImageProcessor::crop(img, y1, x1, y2, x2);
+        Image<> convImg = ImageProcessor::computeConvolution(cropImg, kernel);
+        return ImageProcessor::overlap(img, convImg, x1, y1);
     }
 
 // HUE (HSV HUE)
@@ -118,7 +130,7 @@ namespace ImageProcessor {
 
 //  CROP
 
-    template<typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
+    template<typename T, typename>
     Image<T> crop(const Image<T> &img, int x1, int y1, int x2, int y2) {
         if ((x2 > x1) && (y2 > y1) &&
             (x1 >= 0) && (y1 >= 0) &&
@@ -139,6 +151,36 @@ namespace ImageProcessor {
             return newimg;
         } else
             throw ImageException("Dimensions for crop are not valid.");
+    }
+
+//  OVERLAP
+
+    template<typename T, typename>
+    Image<T> overlap(const Image<T> &img, const Image<T> &topImg, int x, int y) {
+        if ((x >= 0) && (y >= 0) && (x < img.getWidth()) && (y < img.getHeight())) {
+            int height = img.getHeight();
+            int width = img.getWidth();
+            Image<T> newimg(width, height);
+
+            T *newbuff = new T[width * height];
+            T *oldbuff = img.getBuffer();
+            T *topbuff = topImg.getBuffer();
+
+            int maxWidth = (topImg.getWidth()+x > width) ? width : topImg.getWidth()+x;
+            int maxHeight = (topImg.getHeight()+y > height) ? height : topImg.getHeight()+y;
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if((i >= y && i < maxHeight) && (j >= x && j < maxWidth))
+                        newbuff[i * width + j] = topbuff[(i-y) * topImg.getWidth() + (j-x)];
+                    else
+                        newbuff[i * width + j] = oldbuff[i * width + j];
+                }
+            }
+            newimg.setBuffer(newbuff);
+
+            return newimg;
+        } else
+            throw ImageException("Coordinates for overlap are not valid.");
     }
 
 //  FLIP
