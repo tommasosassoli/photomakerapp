@@ -25,7 +25,7 @@ public:
 
         QObject::connect(blurButton, SIGNAL(clicked()), parent, SLOT(applyBlur()));
         QObject::connect(sharpenButton, SIGNAL(clicked()), parent, SLOT(applySharpen()));
-        QObject::connect(laplacianButton, SIGNAL(clicked()), parent, SLOT(applyLaplatian()));
+        QObject::connect(laplacianButton, SIGNAL(clicked()), parent, SLOT(applyLaplacian()));
 
         QVBoxLayout* layout = new QVBoxLayout(sheet);
         layout->addWidget(blurButton);
