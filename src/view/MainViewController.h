@@ -36,7 +36,9 @@ public:
 
     // filter sheet
     void applyBlur();
+    void applyBlur(int x1, int y1, int x2, int y2);
     void applySharpen();
+    void applySharpen(int x1, int y1, int x2, int y2);
     void applyLaplacian();
     void applyLaplacian(int x1, int y1, int x2, int y2);
 

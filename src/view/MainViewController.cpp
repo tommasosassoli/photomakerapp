@@ -150,10 +150,28 @@ void MainViewController::applyBlur() {
     }
 }
 
+void MainViewController::applyBlur(int x1, int y1, int x2, int y2) {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    if(img) {
+        std::shared_ptr<BlurCommand> blur = std::make_shared<BlurCommand>(img, x1, y1, x2, y2);
+        cmdHandler.registerAndExecute(blur);
+        imageWrapper->setImage(blur->getParsedImage());
+    }
+}
+
 void MainViewController::applySharpen() {
     shared_ptr<Image<>> img = imageWrapper->getImage();
     if(img) {
         std::shared_ptr<SharpenCommand> sharp = std::make_shared<SharpenCommand>(img);
+        cmdHandler.registerAndExecute(sharp);
+        imageWrapper->setImage(sharp->getParsedImage());
+    }
+}
+
+void MainViewController::applySharpen(int x1, int y1, int x2, int y2) {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    if(img) {
+        std::shared_ptr<SharpenCommand> sharp = std::make_shared<SharpenCommand>(img, x1, y1, x2, y2);
         cmdHandler.registerAndExecute(sharp);
         imageWrapper->setImage(sharp->getParsedImage());
     }

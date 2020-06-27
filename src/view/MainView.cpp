@@ -125,13 +125,23 @@ void MainView::adjustValue(int val) {
 }
 
 void MainView::applyBlur() {
+    QRect rect = ui->getSelectedArea();
     ui->setApplyingChangesState();
-    controller->applyBlur();
+    if(rect.isEmpty())
+        controller->applyBlur();
+    else
+        controller->applyBlur(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
 }
 
 void MainView::applySharpen() {
+    QRect rect = ui->getSelectedArea();
     ui->setApplyingChangesState();
-    controller->applySharpen();
+    if(rect.isEmpty())
+        controller->applySharpen();
+    else
+        controller->applySharpen(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
 }
 
 void MainView::applyLaplacian() {
@@ -141,6 +151,7 @@ void MainView::applyLaplacian() {
         controller->applyLaplacian();
     else
         controller->applyLaplacian(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
 }
 
 void MainView::update() {

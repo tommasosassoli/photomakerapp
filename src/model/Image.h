@@ -30,6 +30,23 @@ public:
         buffer = pixels;
     }
 
+    Image<TPixel>& operator=(Image<TPixel>&& other) {
+        if(this != &other) {
+            delete[] buffer;
+            width = 0;
+            height = 0;
+
+            width = other.width;
+            height = other.height;
+            buffer = other.buffer;
+
+            other.width = 0;
+            other.height = 0;
+            other.buffer = nullptr;
+        }
+        return *this;
+    }
+
     Image<TPixel>* clone(){
         return new Image(*this);
     }
