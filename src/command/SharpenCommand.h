@@ -10,8 +10,10 @@
 
 class SharpenCommand : public Command {
 public:
-    SharpenCommand(shared_ptr<Image<>> img, int x1 = 0, int y1 = 0, int x2 = 0, int y2 = 0) : Command(img), x1(x1),
-    y1(y1), x2(x2), y2(y2){
+    SharpenCommand(shared_ptr<Image<>> img) : Command(img){
+    }
+
+    SharpenCommand(shared_ptr<Image<>> img, int x1, int y1, int x2, int y2) : Command(img, x1, y1, x2, y2) {
     }
 
     void execute() override {
@@ -31,14 +33,8 @@ public:
     }
 
     std::string toString() override {
-        return "Laplatian";
+        return "Sharpen";
     }
-
-private:
-    int x1;
-    int y1;
-    int x2;
-    int y2;
 };
 
 

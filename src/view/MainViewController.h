@@ -27,12 +27,17 @@ public:
     // crop sheet
     void makeCrop(int x1, int y1, int x2, int y2);
     void makeFlip();
+    void makeFlip(int x1, int y1, int x2, int y2);
     void makeMirror();
+    void makeMirror(int x1, int y1, int x2, int y2);
 
     // color sheet
     void adjustHue(double val);
+    void adjustHue(double val, int x1, int y1, int x2, int y2);
     void adjustSaturation(double val);
+    void adjustSaturation(double val, int x1, int y1, int x2, int y2);
     void adjustValue(double val);
+    void adjustValue(double val, int x1, int y1, int x2, int y2);
 
     // filter sheet
     void applyBlur();
@@ -41,6 +46,12 @@ public:
     void applySharpen(int x1, int y1, int x2, int y2);
     void applyLaplacian();
     void applyLaplacian(int x1, int y1, int x2, int y2);
+    void applyGrayscale();
+    void applyGrayscale(int x1, int y1, int x2, int y2);
+    void applyBinary();
+    void applyBinary(int x1, int y1, int x2, int y2);
+    void applyNegative();
+    void applyNegative(int x1, int y1, int x2, int y2);
 
     // other method
     int getOldHue() const;

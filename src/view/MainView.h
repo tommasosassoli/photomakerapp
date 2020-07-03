@@ -53,6 +53,9 @@ private slots:
     void applyBlur();
     void applySharpen();
     void applyLaplacian();
+    void applyGrayscale();
+    void applyBinary();
+    void applyNegative();
 
 private:
     MainViewWindow* ui;

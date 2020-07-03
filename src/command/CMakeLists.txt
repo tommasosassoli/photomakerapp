@@ -12,6 +12,9 @@ set(SOURCE_FILES
         BlurCommand.h
         SharpenCommand.h
         LaplacianCommand.h
+        GrayscaleCommand.h
+        BinaryCommand.h
+        NegativeCommand.h
         )
 
 add_library(photomakerapp_command_lib ${SOURCE_FILES})

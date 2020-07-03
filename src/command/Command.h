@@ -17,6 +17,10 @@ public:
         previousImg = std::move(img);
     }
 
+    Command(shared_ptr<Image<>> img, int x1, int y1, int x2, int y2): x1(x1), y1(y1), x2(x2), y2(y2) {
+        previousImg = std::move(img);
+    }
+
     virtual ~Command() {
     }
 
@@ -36,6 +40,11 @@ protected:
     shared_ptr<Image<>> previousImg;
 
     shared_ptr<Image<>> parsedImg;
+
+    int x1 {0};
+    int y1 {0};
+    int x2 {0};
+    int y2 {0};
 };
 
 

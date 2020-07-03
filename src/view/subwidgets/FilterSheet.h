@@ -22,15 +22,24 @@ public:
         QPushButton* blurButton = new QPushButton("Blur", sheet);
         QPushButton* sharpenButton = new QPushButton("Sharpen", sheet);
         QPushButton* laplacianButton = new QPushButton("Edge detection", sheet);
+        QPushButton* grayscale = new QPushButton("Grayscale", sheet);
+        QPushButton* binary = new QPushButton("Binary", sheet);
+        QPushButton* negative = new QPushButton("Negative", sheet);
 
         QObject::connect(blurButton, SIGNAL(clicked()), parent, SLOT(applyBlur()));
         QObject::connect(sharpenButton, SIGNAL(clicked()), parent, SLOT(applySharpen()));
         QObject::connect(laplacianButton, SIGNAL(clicked()), parent, SLOT(applyLaplacian()));
+        QObject::connect(grayscale, SIGNAL(clicked()), parent, SLOT(applyGrayscale()));
+        QObject::connect(binary, SIGNAL(clicked()), parent, SLOT(applyBinary()));
+        QObject::connect(negative, SIGNAL(clicked()), parent, SLOT(applyNegative()));
 
         QVBoxLayout* layout = new QVBoxLayout(sheet);
         layout->addWidget(blurButton);
         layout->addWidget(sharpenButton);
         layout->addWidget(laplacianButton);
+        layout->addWidget(grayscale);
+        layout->addWidget(binary);
+        layout->addWidget(negative);
 
         layout->setAlignment(Qt::AlignCenter);
 

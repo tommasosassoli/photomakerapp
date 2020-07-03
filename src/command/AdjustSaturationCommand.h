@@ -13,8 +13,18 @@ public:
     AdjustSaturationCommand(shared_ptr<Image<>> img, double delta) : Command(img), delta(delta) {
     }
 
+    AdjustSaturationCommand(shared_ptr<Image<>> img, double delta, int x1, int y1, int x2, int y2) :
+    Command(img, x1, y1 ,x2, y2), delta(delta) {
+    }
+
     void execute() override {
-        Image<> tmp = ImageProcessor::adjustSaturation(*(this->previousImg.get()), delta / 100);
+        Image<> tmp;
+
+        if(x1 == 0 && y1 == 0 && x2 == 0 && y2 == 0)
+            tmp = ImageProcessor::adjustSaturation(*(this->previousImg.get()), delta/100);
+        else
+            tmp = ImageProcessor::adjustSaturation(*(this->previousImg.get()), delta/100, x1, y1, x2, y2);
+
         this->parsedImg = std::make_shared<Image<>>(tmp);
     }
 

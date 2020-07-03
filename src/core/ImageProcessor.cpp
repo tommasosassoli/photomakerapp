@@ -66,9 +66,9 @@ namespace ImageProcessor {
 
     inline Image<RGBPixel> computeConvolution(const Image<RGBPixel> &img, const KernelMatrix &kernel,
             int x1, int y1, int x2, int y2) {
-        Image<> cropImg = ImageProcessor::crop(img, y1, x1, y2, x2);
-        Image<> convImg = ImageProcessor::computeConvolution(cropImg, kernel);
-        return ImageProcessor::overlap(img, convImg, x1, y1);
+        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+        tmp = ImageProcessor::computeConvolution(tmp, kernel);
+        return ImageProcessor::overlap(img, tmp, x1, y1);
     }
 
 // HUE (HSV HUE)
@@ -90,6 +90,12 @@ namespace ImageProcessor {
         return adjustHue(img.convert<HSVPixel>(), delta).convert<RGBPixel>();
     }
 
+    inline Image<RGBPixel> adjustHue(const Image<RGBPixel> &img, double delta, int x1, int y1, int x2, int y2) {
+        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+        tmp = ImageProcessor::adjustHue(tmp, delta);
+        return ImageProcessor::overlap(img, tmp, x1, y1);
+    }
+
 // SATURATION (HSV SATURATION)
 
     inline Image<HSVPixel> adjustSaturation(const Image<HSVPixel> &img, double delta) {
@@ -109,6 +115,12 @@ namespace ImageProcessor {
         return adjustSaturation(img.convert<HSVPixel>(), delta).convert<RGBPixel>();
     }
 
+    inline Image<RGBPixel> adjustSaturation(const Image<RGBPixel> &img, double delta, int x1, int y1, int x2, int y2) {
+        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+        tmp = ImageProcessor::adjustSaturation(tmp, delta);
+        return ImageProcessor::overlap(img, tmp, x1, y1);
+    }
+
 // BRIGHTNESS (HSV VALUE)
 
     inline Image<HSVPixel> adjustValue(const Image<HSVPixel> &img, double delta) {
@@ -126,6 +138,61 @@ namespace ImageProcessor {
 
     inline Image<RGBPixel> adjustValue(const Image<RGBPixel> &img, const double delta) {
         return adjustValue(img.convert<HSVPixel>(), delta).convert<RGBPixel>();
+    }
+
+    inline Image<RGBPixel> adjustValue(const Image<RGBPixel> &img, double delta, int x1, int y1, int x2, int y2) {
+        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+        tmp = ImageProcessor::adjustValue(tmp, delta);
+        return ImageProcessor::overlap(img, tmp, x1, y1);
+    }
+
+//  BINARY EFFECT
+
+    inline Image<HSVPixel> binaryEffect(const Image<HSVPixel> &img) {
+        Image<HSVPixel> newimg = img;
+        HSVPixel *newbuff = newimg.getBuffer();
+        for (int i = 0; i < img.getHeight() * img.getWidth(); i++) {
+            if(newbuff[i].getValue() > 0.5)
+                newbuff[i].setValue(newbuff[i].getValue() + 1);
+            else
+                newbuff[i].setValue(newbuff[i].getValue() - 1);
+        }
+
+        return newimg;
+    }
+
+    inline Image<RGBPixel> binaryEffect(const Image<RGBPixel> &img) {
+        return binaryEffect(img.convert<HSVPixel>()).convert<RGBPixel>();
+    }
+
+    inline Image<RGBPixel> binaryEffect(const Image<RGBPixel> &img, int x1, int y1, int x2, int y2) {
+        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+        tmp = ImageProcessor::binaryEffect(tmp);
+        return ImageProcessor::overlap(img, tmp, x1, y1);
+    }
+
+//  NEGATIVE EFFECT
+
+    inline Image<RGBPixel> negativeEffect(const Image<RGBPixel> &img) {
+        Image<RGBPixel> newimg = img;
+        RGBPixel *newbuff = newimg.getBuffer();
+        for (int i = 0; i < img.getHeight() * img.getWidth(); i++) {
+            newbuff[i].setR(255 - newbuff[i].getR());
+            newbuff[i].setG(255 - newbuff[i].getG());
+            newbuff[i].setB(255 - newbuff[i].getB());
+        }
+
+        return newimg;
+    }
+
+    inline Image<HSVPixel> negativeEffect(const Image<HSVPixel> &img) {
+        return negativeEffect(img.convert<RGBPixel>()).convert<HSVPixel>();
+    }
+
+    inline Image<RGBPixel> negativeEffect(const Image<RGBPixel> &img, int x1, int y1, int x2, int y2) {
+        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+        tmp = ImageProcessor::negativeEffect(tmp);
+        return ImageProcessor::overlap(img, tmp, x1, y1);
     }
 
 //  CROP
@@ -203,6 +270,13 @@ namespace ImageProcessor {
         return newimg;
     }
 
+    template<typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
+    inline Image<T> flip(const Image<T> &img, int x1, int y1, int x2, int y2) {
+        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+        tmp = ImageProcessor::flip(tmp);
+        return ImageProcessor::overlap(img, tmp, x1, y1);
+    }
+
 //  MIRROR
 
     template<typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
@@ -223,10 +297,13 @@ namespace ImageProcessor {
         return newimg;
     }
 
+    template<typename T, typename = std::enable_if<std::is_base_of<AbstractPixel, T>::value>>
+    inline Image<T> mirror(const Image<T> &img, int x1, int y1, int x2, int y2) {
+        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+        tmp = ImageProcessor::mirror(tmp);
+        return ImageProcessor::overlap(img, tmp, x1, y1);
+    }
 
-//TODO implementa filtro su ritaglio
-
-//TODO rotazione (90 gradi)
 
 };
 

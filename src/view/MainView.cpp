@@ -100,28 +100,53 @@ void MainView::makeCrop() {
 }
 
 void MainView::makeFlip() {
+    QRect rect = ui->getSelectedArea();
     ui->setApplyingChangesState();
-    controller->makeFlip();
+    if(rect.isEmpty())
+        controller->makeFlip();
+    else
+        controller->makeFlip(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
 }
 
 void MainView::makeMirror() {
+    QRect rect = ui->getSelectedArea();
     ui->setApplyingChangesState();
-    controller->makeMirror();
+    if(rect.isEmpty())
+        controller->makeMirror();
+    else
+        controller->makeMirror(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
 }
 
 void MainView::adjustHue(int val) {
+    QRect rect = ui->getSelectedArea();
     ui->setApplyingChangesState();
-    controller->adjustHue(val);
+    if(rect.isEmpty())
+        controller->adjustHue(val);
+    else
+        controller->adjustHue(val, rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
 }
 
 void MainView::adjustSaturation(int val) {
+    QRect rect = ui->getSelectedArea();
     ui->setApplyingChangesState();
-    controller->adjustSaturation(val);
+    if(rect.isEmpty())
+        controller->adjustSaturation(val);
+    else
+        controller->adjustSaturation(val, rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
 }
 
 void MainView::adjustValue(int val) {
+    QRect rect = ui->getSelectedArea();
     ui->setApplyingChangesState();
-    controller->adjustValue(val);
+    if(rect.isEmpty())
+        controller->adjustValue(val);
+    else
+        controller->adjustValue(val, rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
 }
 
 void MainView::applyBlur() {
@@ -151,6 +176,36 @@ void MainView::applyLaplacian() {
         controller->applyLaplacian();
     else
         controller->applyLaplacian(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
+}
+
+void MainView::applyGrayscale() {
+    QRect rect = ui->getSelectedArea();
+    ui->setApplyingChangesState();
+    if(rect.isEmpty())
+        controller->applyGrayscale();
+    else
+        controller->applyGrayscale(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
+}
+
+void MainView::applyBinary() {
+    QRect rect = ui->getSelectedArea();
+    ui->setApplyingChangesState();
+    if(rect.isEmpty())
+        controller->applyBinary();
+    else
+        controller->applyBinary(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
+}
+
+void MainView::applyNegative() {//TODO
+    QRect rect = ui->getSelectedArea();
+    ui->setApplyingChangesState();
+    if(rect.isEmpty())
+        controller->applyNegative();
+    else
+        controller->applyNegative(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
     ui->setSelectionActive(false);
 }
 
