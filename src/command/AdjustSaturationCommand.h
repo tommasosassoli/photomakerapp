@@ -20,16 +20,17 @@ public:
     void execute() override {
         Image<> tmp;
 
-        if(x1 == 0 && y1 == 0 && x2 == 0 && y2 == 0)
+        if(!isApplyToSubImage())
             tmp = ImageProcessor::adjustSaturation(*(this->previousImg.get()), delta/100);
         else
-            tmp = ImageProcessor::adjustSaturation(*(this->previousImg.get()), delta/100, x1, y1, x2, y2);
+            tmp = ImageProcessor::adjustSaturation(*(this->previousImg.get()), delta/100,
+                    getX1(), getY1(), getX2(), getY2());
 
         this->parsedImg = std::make_shared<Image<>>(tmp);
     }
 
     std::string toString() override {
-        return "Adjust Saturation";
+        return "Adjust Saturation: " + std::to_string(getDelta());
     }
 
     double getDelta() const {

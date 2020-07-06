@@ -13,11 +13,8 @@
 
 class Command {
 public:
-    Command(shared_ptr<Image<>> img) {
-        previousImg = std::move(img);
-    }
-
-    Command(shared_ptr<Image<>> img, int x1, int y1, int x2, int y2): x1(x1), y1(y1), x2(x2), y2(y2) {
+    explicit Command(shared_ptr<Image<>> img, int x1 = -1, int y1 = -1, int x2 = -1, int y2 = -1)
+    : x1(x1), y1(y1), x2(x2), y2(y2) {
         previousImg = std::move(img);
     }
 
@@ -41,10 +38,31 @@ protected:
 
     shared_ptr<Image<>> parsedImg;
 
-    int x1 {0};
-    int y1 {0};
-    int x2 {0};
-    int y2 {0};
+    bool isApplyToSubImage() {
+        return !(x1 == -1 && y1 == -1 && x2 == -1 && y2 == -1);
+    }
+
+    int getX1() const {
+        return x1;
+    }
+
+    int getY1() const {
+        return y1;
+    }
+
+    int getX2() const {
+        return x2;
+    }
+
+    int getY2() const {
+        return y2;
+    }
+
+private:
+    int x1;
+    int y1;
+    int x2;
+    int y2;
 };
 
 

@@ -24,10 +24,11 @@ public:
         KernelMatrix kernel(arr, 3);
 
         Image<> tmp;
-        if(x1 == 0 && y1 == 0 && x2 == 0 && y2 == 0)
+        if(!isApplyToSubImage())
             tmp = ImageProcessor::computeConvolution(*(this->previousImg.get()), kernel);
         else
-            tmp = ImageProcessor::computeConvolution(*(this->previousImg.get()), kernel, x1, y1, x2, y2);
+            tmp = ImageProcessor::computeConvolution(*(this->previousImg.get()), kernel,
+                    getX1(), getY1(), getX2(), getY2());
 
         this->parsedImg = std::make_shared<Image<>>(tmp);
     }

@@ -15,6 +15,7 @@ set(SOURCE_FILES
         GrayscaleCommand.h
         BinaryCommand.h
         NegativeCommand.h
+        CartoonCommand.h
         )
 
 add_library(photomakerapp_command_lib ${SOURCE_FILES})

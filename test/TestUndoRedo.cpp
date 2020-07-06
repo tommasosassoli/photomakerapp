@@ -21,7 +21,7 @@ protected:
             GTEST_FATAL_FAILURE_("Cannot load the test image");
     }
 
-    shared_ptr<Image<>> testImg;
+    shared_ptr<Image<>> testImg; //TODO controllo dell'immagine
     CommandHandler cmdHandler;
 };
 

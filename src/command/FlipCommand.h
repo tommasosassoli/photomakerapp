@@ -19,10 +19,10 @@ public:
     void execute() override {
         Image<> tmp;
 
-        if(x1 == 0 && y1 == 0 && x2 == 0 && y2 == 0)
+        if(!isApplyToSubImage())
             tmp = ImageProcessor::flip(*(this->previousImg.get()));
         else
-            tmp = ImageProcessor::flip(*(this->previousImg.get()), x1, y1, x2, y2);
+            tmp = ImageProcessor::flip(*(this->previousImg.get()), getX1(), getY1(), getX2(), getY2());
 
         this->parsedImg = std::make_shared<Image<>>(tmp);
     }
