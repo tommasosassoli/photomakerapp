@@ -49,7 +49,7 @@ TEST_F(TestPixelConversion, PixelTransformation){
 }
 
 TEST_F(TestPixelConversion, TestImageRGBtoHSV) {
-    std::ifstream origFile("../../test/testImage/Vd-Orig.ppm");
+    std::ifstream origFile("../../test/testImage/convolution/Vd-Orig.ppm");
 
     if(origFile.is_open()){
         try {

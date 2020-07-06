@@ -199,7 +199,7 @@ void MainView::applyBinary() {
     ui->setSelectionActive(false);
 }
 
-void MainView::applyNegative() {//TODO
+void MainView::applyNegative() {
     QRect rect = ui->getSelectedArea();
     ui->setApplyingChangesState();
     if(rect.isEmpty())

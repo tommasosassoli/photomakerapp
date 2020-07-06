@@ -12,7 +12,7 @@
 class TestUndoRedo : public ::testing::Test {
 protected:
     virtual void SetUp() {
-        std::ifstream imgFile("../../test/testImage/Vd-Orig.ppm");
+        std::ifstream imgFile("../../test/testImage/convolution/Vd-Orig.ppm");
         if(imgFile.is_open()) {
             Image<> img;
             imgFile >> img;
