@@ -90,10 +90,14 @@ namespace ImageProcessor {
         return adjustHue(img.convert<HSVPixel>(), delta).convert<RGBPixel>();
     }
 
-    inline Image<RGBPixel> adjustHue(const Image<RGBPixel> &img, double delta, int x1, int y1, int x2, int y2) {
-        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+    inline Image<HSVPixel> adjustHue(const Image<HSVPixel> &img, double delta, int x1, int y1, int x2, int y2) {
+        Image<HSVPixel> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
         tmp = ImageProcessor::adjustHue(tmp, delta);
         return ImageProcessor::overlap(img, tmp, x1, y1);
+    }
+
+    inline Image<RGBPixel> adjustHue(const Image<RGBPixel> &img, double delta, int x1, int y1, int x2, int y2) {
+        return ImageProcessor::adjustHue(img.convert<HSVPixel>(), delta, x1, y1 ,x2, y2).convert<RGBPixel>();
     }
 
 // SATURATION (HSV SATURATION)
@@ -115,10 +119,14 @@ namespace ImageProcessor {
         return adjustSaturation(img.convert<HSVPixel>(), delta).convert<RGBPixel>();
     }
 
-    inline Image<RGBPixel> adjustSaturation(const Image<RGBPixel> &img, double delta, int x1, int y1, int x2, int y2) {
-        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+    inline Image<HSVPixel> adjustSaturation(const Image<HSVPixel> &img, double delta, int x1, int y1, int x2, int y2) {
+        Image<HSVPixel> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
         tmp = ImageProcessor::adjustSaturation(tmp, delta);
         return ImageProcessor::overlap(img, tmp, x1, y1);
+    }
+
+    inline Image<RGBPixel> adjustSaturation(const Image<RGBPixel> &img, double delta, int x1, int y1, int x2, int y2) {
+        return ImageProcessor::adjustSaturation(img.convert<HSVPixel>(), delta, x1, y1, x2, y2).convert<RGBPixel>();
     }
 
 // BRIGHTNESS (HSV VALUE)
@@ -140,10 +148,14 @@ namespace ImageProcessor {
         return adjustValue(img.convert<HSVPixel>(), delta).convert<RGBPixel>();
     }
 
-    inline Image<RGBPixel> adjustValue(const Image<RGBPixel> &img, double delta, int x1, int y1, int x2, int y2) {
-        Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
+    inline Image<HSVPixel> adjustValue(const Image<HSVPixel> &img, double delta, int x1, int y1, int x2, int y2) {
+        Image<HSVPixel> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
         tmp = ImageProcessor::adjustValue(tmp, delta);
         return ImageProcessor::overlap(img, tmp, x1, y1);
+    }
+
+    inline Image<RGBPixel> adjustValue(const Image<RGBPixel> &img, double delta, int x1, int y1, int x2, int y2) {
+        return ImageProcessor::adjustValue(img.convert<HSVPixel>(), delta, x1, y1, x2, y2).convert<RGBPixel>();
     }
 
 //  BINARY EFFECT
