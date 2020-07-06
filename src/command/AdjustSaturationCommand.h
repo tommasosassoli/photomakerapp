@@ -30,7 +30,7 @@ public:
     }
 
     std::string toString() override {
-        return "Adjust Saturation: " + std::to_string(getDelta());
+        return "Adjust Saturation: " + std::to_string(int(getDelta()));
     }
 
     double getDelta() const {

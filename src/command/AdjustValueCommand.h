@@ -29,7 +29,7 @@ public:
     }
 
     std::string toString() override {
-        return "Adjust Value: " + std::to_string(getDelta());
+        return "Adjust Brightness: " + std::to_string(int(getDelta()));
     }
 
     double getDelta() const {
