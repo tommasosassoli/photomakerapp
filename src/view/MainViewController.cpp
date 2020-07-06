@@ -16,6 +16,7 @@
 #include "../command/GrayscaleCommand.h"
 #include "../command/BinaryCommand.h"
 #include "../command/NegativeCommand.h"
+#include "../command/CartoonCommand.h"
 
 MainViewController::MainViewController(ImageWrapper *imageWrapper) : imageWrapper(imageWrapper) {
 }
@@ -301,6 +302,24 @@ void MainViewController::applyNegative(int x1, int y1, int x2, int y2) {
         std::shared_ptr<NegativeCommand> neg = std::make_shared<NegativeCommand>(img, x1, y1, x2, y2);
         cmdHandler.registerAndExecute(neg);
         imageWrapper->setImage(neg->getParsedImage());
+    }
+}
+
+void MainViewController::applyCartoon() {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    if(img) {
+        std::shared_ptr<CartoonCommand> cartoon = std::make_shared<CartoonCommand>(img);
+        cmdHandler.registerAndExecute(cartoon);
+        imageWrapper->setImage(cartoon->getParsedImage());
+    }
+}
+
+void MainViewController::applyCartoon(int x1, int y1, int x2, int y2) {
+    shared_ptr<Image<>> img = imageWrapper->getImage();
+    if(img) {
+        std::shared_ptr<CartoonCommand> cartoon = std::make_shared<CartoonCommand>(img, x1, y1, x2, y2);
+        cmdHandler.registerAndExecute(cartoon);
+        imageWrapper->setImage(cartoon->getParsedImage());
     }
 }
 

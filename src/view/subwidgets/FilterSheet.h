@@ -25,6 +25,7 @@ public:
         QPushButton* grayscale = new QPushButton("Grayscale", sheet);
         QPushButton* binary = new QPushButton("Binary", sheet);
         QPushButton* negative = new QPushButton("Negative", sheet);
+        QPushButton* cartoon = new QPushButton("Cartoon", sheet);
 
         QObject::connect(blurButton, SIGNAL(clicked()), parent, SLOT(applyBlur()));
         QObject::connect(sharpenButton, SIGNAL(clicked()), parent, SLOT(applySharpen()));
@@ -32,6 +33,7 @@ public:
         QObject::connect(grayscale, SIGNAL(clicked()), parent, SLOT(applyGrayscale()));
         QObject::connect(binary, SIGNAL(clicked()), parent, SLOT(applyBinary()));
         QObject::connect(negative, SIGNAL(clicked()), parent, SLOT(applyNegative()));
+        QObject::connect(cartoon, SIGNAL(clicked()), parent, SLOT(applyCartoon()));
 
         QVBoxLayout* layout = new QVBoxLayout(sheet);
         layout->addWidget(blurButton);
@@ -40,6 +42,7 @@ public:
         layout->addWidget(grayscale);
         layout->addWidget(binary);
         layout->addWidget(negative);
+        layout->addWidget(cartoon);
 
         layout->setAlignment(Qt::AlignCenter);
 

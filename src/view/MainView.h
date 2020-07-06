@@ -56,6 +56,7 @@ private slots:
     void applyGrayscale();
     void applyBinary();
     void applyNegative();
+    void applyCartoon();
 
 private:
     MainViewWindow* ui;

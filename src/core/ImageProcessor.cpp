@@ -158,9 +158,9 @@ namespace ImageProcessor {
         return ImageProcessor::adjustValue(img.convert<HSVPixel>(), delta, x1, y1, x2, y2).convert<RGBPixel>();
     }
 
-//  BINARY EFFECT
+//  CARTOON EFFECT
 
-    inline Image<HSVPixel> binaryEffect(const Image<HSVPixel> &img) {
+    inline Image<HSVPixel> cartoonEffect(const Image<HSVPixel> &img) {
         Image<HSVPixel> newimg = img;
         HSVPixel *newbuff = newimg.getBuffer();
         for (int i = 0; i < img.getHeight() * img.getWidth(); i++) {
@@ -173,13 +173,13 @@ namespace ImageProcessor {
         return newimg;
     }
 
-    inline Image<RGBPixel> binaryEffect(const Image<RGBPixel> &img) {
-        return binaryEffect(img.convert<HSVPixel>()).convert<RGBPixel>();
+    inline Image<RGBPixel> cartoonEffect(const Image<RGBPixel> &img) {
+        return cartoonEffect(img.convert<HSVPixel>()).convert<RGBPixel>();
     }
 
-    inline Image<RGBPixel> binaryEffect(const Image<RGBPixel> &img, int x1, int y1, int x2, int y2) {
+    inline Image<RGBPixel> cartoonEffect(const Image<RGBPixel> &img, int x1, int y1, int x2, int y2) {
         Image<> tmp = ImageProcessor::crop(img, y1, x1, y2, x2);
-        tmp = ImageProcessor::binaryEffect(tmp);
+        tmp = ImageProcessor::cartoonEffect(tmp);
         return ImageProcessor::overlap(img, tmp, x1, y1);
     }
 

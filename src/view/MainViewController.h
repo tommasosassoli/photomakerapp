@@ -52,6 +52,8 @@ public:
     void applyBinary(int x1, int y1, int x2, int y2);
     void applyNegative();
     void applyNegative(int x1, int y1, int x2, int y2);
+    void applyCartoon();
+    void applyCartoon(int x1, int y1, int x2, int y2);
 
     // other method
     int getOldHue() const;

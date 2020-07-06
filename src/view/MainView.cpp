@@ -209,6 +209,17 @@ void MainView::applyNegative() {
     ui->setSelectionActive(false);
 }
 
+void MainView::applyCartoon() {
+    QRect rect = ui->getSelectedArea();
+    ui->setApplyingChangesState();
+    if(rect.isEmpty())
+        controller->applyCartoon();
+    else
+        controller->applyCartoon(rect.x(), rect.y(), rect.x()+rect.width(), rect.y()+rect.height());
+    ui->setSelectionActive(false);
+}
+
+
 void MainView::update() {
     Image<>* img = imageWrapper->getImage().get();
 
