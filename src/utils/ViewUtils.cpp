@@ -13,7 +13,7 @@ namespace ViewUtils {
 
     inline QAction* createIconAction(QString buttonName, QWidget* parent) {
         QAction* act = new QAction(parent);
-        QString path = "resources/" + buttonName + ".svg";
+        QString path = "../resources/" + buttonName + ".svg";
 
         if(QFile::exists(path)){
             act->setIcon(QIcon(path));
