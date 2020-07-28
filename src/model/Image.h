@@ -11,9 +11,11 @@
 #include "RGBPixel.h"
 #include "HSVPixel.h"
 
+enum imgFormat {P3 = 3, P6 = 6};
+
 template<typename TPixel = RGBPixel>
 class Image {
-    static_assert(std::is_base_of<AbstractPixel, TPixel>::value, "TPixel must be extend AbstractPixel");
+    static_assert(std::is_base_of<AbstractPixel, TPixel>::value, "TPixel must extend AbstractPixel");
 public:
     explicit Image(int width = 0, int height = 0){
         setWidth(width);
@@ -21,6 +23,7 @@ public:
     }
 
     Image(const Image& that) {// deep copy of the image
+        format = that.format;
         setHeight(that.height);
         setWidth(that.width);
         TPixel *pixels = new TPixel[height * width];
@@ -35,11 +38,14 @@ public:
             delete[] buffer;
             width = 0;
             height = 0;
+            format = P3;
 
+            format = other.format;
             width = other.width;
             height = other.height;
             buffer = other.buffer;
 
+            other.format = P3;
             other.width = 0;
             other.height = 0;
             other.buffer = nullptr;
@@ -53,6 +59,7 @@ public:
 
     Image<TPixel> cloneInfo() const{
         Image<TPixel> i(this->width, this->height);
+        i.format = this->format;
         i.setBuffer(new TPixel[this->height * this->width]);
         return i;
     }
@@ -84,7 +91,8 @@ public:
 
     bool operator==(const Image<TPixel>& p) const{
         if((this->getHeight() == p.getHeight()) &&
-           (this->getWidth() == p.getWidth())){
+           (this->getWidth() == p.getWidth()) &&
+           this->format == p.format){
             int eq = 0;
             TPixel* thisBuff = this->getBuffer();
             TPixel* pBuff = p.getBuffer();
@@ -97,15 +105,28 @@ public:
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Image &image){
-        os << image.format << "\n"
+        os << "P" << image.format << "\n"
            << image.width << " "
            << image.height << "\n"
            << "255" << "\n";
         if (image.buffer != nullptr) {
-            for (int i = 0; i < image.height; i++) {
-                for (int j = 0; j < image.width; j++)
-                    os << image.buffer[i * image.width + j];
-                os << "\n";
+            if (image.format == P3) {
+                for (int i = 0; i < image.height; i++) {
+                    for (int j = 0; j < image.width; j++)
+                        os << image.buffer[i * image.width + j];
+                    os << "\n";
+                }
+            } else {    //P6
+                int buffSize = 3 * image.width * image.height;
+                char *pixelData = new char[buffSize];
+
+                for (int i = 0, j = 0; i < buffSize; i += 3, j++) {
+                    pixelData[i] = image.buffer[j].getR();
+                    pixelData[i + 1] = image.buffer[j].getG();
+                    pixelData[i + 2] = image.buffer[j].getB();
+                }
+
+                os.write(pixelData, buffSize);
             }
         }
         return os;
@@ -116,7 +137,8 @@ public:
         preprocessStream(is, ss);
         std::string format;
         ss >> format;
-        if (format == "P3") {                     //check file format (.ppm)
+
+        if (format == "P3" || format == "P6") {
             std::string h_s, w_s, maxVal_s;
             ss >> w_s >> h_s >> maxVal_s;
 
@@ -127,16 +149,39 @@ public:
             if ((image.height > 0) && (image.width > 0) && (maxVal > 0) && (maxVal <= 255)) {   //check image dimensions
                 TPixel *pixels = new TPixel[image.width * image.height];      //pixel matrix
 
-                for (int i = 0; i < image.width * image.height; i++) {
-                    try{
-                        pixels[i] = Image::getPixelFromStream(ss);
-                    } catch (ImageException &e){
-                        delete[] pixels;
-                        throw ImageException("File corrupted.");
+                if (format == "P3") {                     //check file format (.ppm)
+                    image.format = P3;
+                    for (int i = 0; i < image.width * image.height; i++) {
+                        try {
+                            pixels[i] = Image::getPixelFromStream(ss);
+                        } catch (ImageException &e) {
+                            delete[] pixels;
+                            throw ImageException("File corrupted.");
+                        }
                     }
+                    image.buffer = pixels;   //store pixels array: END
+                    return is;
+
+                } else if (format == "P6") {
+                    image.format = P6;
+                    ss.ignore(2, '\n'); //ignore the \n after the maxVal
+
+                    int buffSize = 3 * image.width * image.height;
+                    char *pixelData = new char[buffSize];
+                    ss.read(pixelData, buffSize);
+
+                    unsigned char r, g, b;
+                    for (int i = 0, j = 0; i < buffSize; i += 3, j++) {
+                        r = pixelData[i];
+                        g = pixelData[i + 1];
+                        b = pixelData[i + 2];
+
+                        pixels[j] = getPixelFromRGBValue(r, g, b);
+                    }
+                    image.buffer = pixels;   //store pixels array: END
+                    delete[] pixelData;
+                    return is;
                 }
-                image.buffer = pixels;   //store pixels array: END
-                return is;
             }
             throw ImageException("File malformed.");
         }
@@ -144,7 +189,7 @@ public:
     }
 
 private:
-    const std::string format {"P3"};
+    imgFormat format {P3};
     int width;
     int height;
     TPixel *buffer {nullptr};
@@ -163,16 +208,24 @@ private:
 
     static void preprocessStream(std::istream& is, std::stringstream& os){
         char c;
-        while(!is.eof()){
+        int endlNum = 0;
+        while(!is.eof()) {
             c = is.get();
-            if(c == 35)
-                is.ignore(4095, '\n');
-            else
+            if(endlNum < 3) {
+                if (c == 35)
+                    is.ignore(4095, '\n');
+                else
+                    os.put(c);
+
+                if (c == 10)
+                    endlNum++;
+            } else
                 os.put(c);
         }
     }
 
     static TPixel getPixelFromStream(std::istream& is);
+    static TPixel getPixelFromRGBValue(unsigned char r, unsigned char g, unsigned char b);
 };
 
 template <>
@@ -195,6 +248,16 @@ inline RGBPixel Image<RGBPixel>::getPixelFromStream(std::istream& is){
     } else {
         throw ImageException("Pixel reading not possible.");
     }
+}
+
+template<>
+inline RGBPixel Image<RGBPixel>::getPixelFromRGBValue(unsigned char r, unsigned char g, unsigned char b) {
+    return RGBPixel(r, g, b);
+}
+
+template<>
+inline HSVPixel Image<HSVPixel>::getPixelFromRGBValue(unsigned char r, unsigned char g, unsigned char b) {
+    return RGBPixel(r, g, b).toHSV();
 }
 
 template<> template <>
