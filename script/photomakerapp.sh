@@ -1,3 +1,4 @@
 #!/bin/sh
 
-bin/photomakerapp
+cd bin
+./photomakerapp
