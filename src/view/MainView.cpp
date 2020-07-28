@@ -30,7 +30,7 @@ void MainView::setFilterSheet() {
 }
 
 void MainView::openImage() {
-    QUrl url = QFileDialog::getOpenFileUrl(this, "Open a file", QUrl(), "ppm file (*.ppm)");
+    QUrl url = QFileDialog::getOpenFileUrl(this, "Open a file", QUrl());    //"ppm file (*.ppm)"
     if(!url.isEmpty()) {
         try {
             ui->setLoadingState();
@@ -45,8 +45,7 @@ void MainView::openImage() {
 
 void MainView::saveImage() {
     if(imageWrapper->getImage() != nullptr) {
-        QString filter = "ppm file (*.ppm)";
-        QUrl url = QFileDialog::getSaveFileUrl(this, "Save file", QUrl(), filter, &filter);
+        QUrl url = QFileDialog::getSaveFileUrl(this, "Save file", QUrl());  //"ppm file (*.ppm)"
         if (!url.isEmpty()) {
             try {
                 controller->saveImage(url.path().toStdString());

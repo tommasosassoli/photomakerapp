@@ -3,7 +3,11 @@
 //
 
 #include <fstream>
+#include <QtGui/QImage>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include "MainViewController.h"
+#include "../utils/FileHandler.cpp"
 #include "../command/CropCommand.h"
 #include "../command/FlipCommand.h"
 #include "../command/MirrorCommand.h"
@@ -22,37 +26,15 @@ MainViewController::MainViewController(ImageWrapper *imageWrapper) : imageWrappe
 }
 
 void MainViewController::openImage(std::string path) {
-    std::ifstream imgFile(path);
+    Image<> i = FileHandler::loadImageFromFile(path);
 
-    if(imgFile.is_open()) {
-        try {
-            Image<> i;
-            imgFile >> i;
-
-            shared_ptr<Image<>> shrImg = std::make_shared<Image<>>(i);
-
-            imageWrapper->setImage(shrImg);
-            cmdHandler.resetAll();  // reset the stacks from the old images
-
-            imgFile.close();
-        } catch (ImageException &e) {
-            throw runtime_error("Cannot open file");
-        }
-    }
+    shared_ptr<Image<>> shrImg = std::make_shared<Image<>>(i);
+    imageWrapper->setImage(shrImg);
+    cmdHandler.resetAll();  // reset the stacks from the old images
 }
 
 void MainViewController::saveImage(std::string path) {
-    std::ofstream outFile(path);
-    Image<>* img = imageWrapper->getImage().get();
-
-    if(outFile.is_open()){
-        if(img != nullptr) {
-            outFile << *img;
-            outFile.close();
-        } else
-            throw runtime_error("No image opened");
-    } else
-        throw runtime_error("Cannot save the file");
+    FileHandler::saveImageToFile(path, imageWrapper->getImage().get());
 }
 
 void MainViewController::undo() {
